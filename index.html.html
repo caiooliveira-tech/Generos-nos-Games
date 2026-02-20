@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Árvore de Gêneros de Jogos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #222240;
+            --accent-action: #ff6b6b;
+            --accent-adventure: #4ecdc4;
+            --accent-strategy: #ffe66d;
+            --accent-rpg: #a66cff;
+            --accent-simulation: #6bcb77;
+            --accent-puzzle: #ff9f43;
+            --accent-outros: #74b9ff;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            background-image: 
+                radial-gradient(ellipse at 20% 20%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(78, 205, 196, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(166, 108, 255, 0.05) 0%, transparent 70%);
+            min-height: 100vh;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-primary);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(1rem, 3.5vw, 1.8rem);
+            color: var(--text-primary);
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 20px rgba(166, 108, 255, 0.5),
+                0 0 30px rgba(166, 108, 255, 0.3);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            line-height: 1.6;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .accordion-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .accordion-item {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .accordion-item:hover {
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 25px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s ease;
+        }
+
+        .accordion-header:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .accordion-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 5px;
+        }
+
+        .genre-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .genre-info {
+            flex: 1;
+        }
+
+        .genre-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .genre-tagline {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .accordion-arrow {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .accordion-item.active .accordion-arrow {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 1500px;
+        }
+
+        .accordion-body {
+            padding: 0 25px 25px 25px;
+        }
+
+        .genre-description {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 3px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .genre-description h3 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .genre-description p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .characteristics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .characteristic-tag {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .subgenres-section h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subgenres-section h3::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .subgenres-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .subgenre-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .subgenre-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .subgenre-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .subgenre-description {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .games-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .game-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        /* Cores por gênero */
+        .accordion-item.acao .accordion-header::before { background: var(--accent-action); }
+        .accordion-item.acao:hover { box-shadow: 0 5px 30px rgba(255, 107, 107, 0.2); }
+        .accordion-item.acao .genre-icon { background: rgba(255, 107, 107, 0.15); color: var(--accent-action); }
+        .accordion-item.acao .genre-title { color: var(--accent-action); }
+        .accordion-item.acao .characteristic-tag { border: 1px solid rgba(255, 107, 107, 0.3); }
+        .accordion-item.acao .game-tag { background: rgba(255, 107, 107, 0.2); }
+
+        .accordion-item.aventura .accordion-header::before { background: var(--accent-adventure); }
+        .accordion-item.aventura:hover { box-shadow: 0 5px 30px rgba(78, 205, 196, 0.2); }
+        .accordion-item.aventura .genre-icon { background: rgba(78, 205, 196, 0.15); color: var(--accent-adventure); }
+        .accordion-item.aventura .genre-title { color: var(--accent-adventure); }
+        .accordion-item.aventura .characteristic-tag { border: 1px solid rgba(78, 205, 196, 0.3); }
+        .accordion-item.aventura .game-tag { background: rgba(78, 205, 196, 0.2); }
+
+        .accordion-item.estrategia .accordion-header::before { background: var(--accent-strategy); }
+        .accordion-item.estrategia:hover { box-shadow: 0 5px 30px rgba(255, 230, 109, 0.2); }
+        .accordion-item.estrategia .genre-icon { background: rgba(255, 230, 109, 0.15); color: var(--accent-strategy); }
+        .accordion-item.estrategia .genre-title { color: var(--accent-strategy); }
+        .accordion-item.estrategia .characteristic-tag { border: 1px solid rgba(255, 230, 109, 0.3); }
+        .accordion-item.estrategia .game-tag { background: rgba(255, 230, 109, 0.2); }
+
+        .accordion-item.rpg .accordion-header::before { background: var(--accent-rpg); }
+        .accordion-item.rpg:hover { box-shadow: 0 5px 30px rgba(166, 108, 255, 0.2); }
+        .accordion-item.rpg .genre-icon { background: rgba(166, 108, 255, 0.15); color: var(--accent-rpg); }
+        .accordion-item.rpg .genre-title { color: var(--accent-rpg); }
+        .accordion-item.rpg .characteristic-tag { border: 1px solid rgba(166, 108, 255, 0.3); }
+        .accordion-item.rpg .game-tag { background: rgba(166, 108, 255, 0.2); }
+
+        .accordion-item.simulacao .accordion-header::before { background: var(--accent-simulation); }
+        .accordion-item.simulacao:hover { box-shadow: 0 5px 30px rgba(107, 203, 119, 0.2); }
+        .accordion-item.simulacao .genre-icon { background: rgba(107, 203, 119, 0.15); color: var(--accent-simulation); }
+        .accordion-item.simulacao .genre-title { color: var(--accent-simulation); }
+        .accordion-item.simulacao .characteristic-tag { border: 1px solid rgba(107, 203, 119, 0.3); }
+        .accordion-item.simulacao .game-tag { background: rgba(107, 203, 119, 0.2); }
+
+        .accordion-item.puzzle .accordion-header::before { background: var(--accent-puzzle); }
+        .accordion-item.puzzle:hover { box-shadow: 0 5px 30px rgba(255, 159, 67, 0.2); }
+        .accordion-item.puzzle .genre-icon { background: rgba(255, 159, 67, 0.15); color: var(--accent-puzzle); }
+        .accordion-item.puzzle .genre-title { color: var(--accent-puzzle); }
+        .accordion-item.puzzle .characteristic-tag { border: 1px solid rgba(255, 159, 67, 0.3); }
+        .accordion-item.puzzle .game-tag { background: rgba(255, 159, 67, 0.2); }
+
+        .accordion-item.outros .accordion-header::before { background: var(--accent-outros); }
+        .accordion-item.outros:hover { box-shadow: 0 5px 30px rgba(116, 185, 255, 0.2); }
+        .accordion-item.outros .genre-icon { background: rgba(116, 185, 255, 0.15); color: var(--accent-outros); }
+        .accordion-item.outros .genre-title { color: var(--accent-outros); }
+        .accordion-item.outros .characteristic-tag { border: 1px solid rgba(116, 185, 255, 0.3); }
+        .accordion-item.outros .game-tag { background: rgba(116, 185, 255, 0.2); }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .accordion-item {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .accordion-item:nth-child(1) { animation-delay: 0.05s; }
+        .accordion-item:nth-child(2) { animation-delay: 0.1s; }
+        .accordion-item:nth-child(3) { animation-delay: 0.15s; }
+        .accordion-item:nth-child(4) { animation-delay: 0.2s; }
+        .accordion-item:nth-child(5) { animation-delay: 0.25s; }
+        .accordion-item:nth-child(6) { animation-delay: 0.3s; }
+        .accordion-item:nth-child(7) { animation-delay: 0.35s; }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding: 15px;
+            }
+            
+            .accordion-item {
+                break-inside: avoid;
+                border: 2px solid #333;
+                margin-bottom: 15px;
+            }
+            
+            .accordion-content {
+                max-height: none !important;
+            }
+            
+            .accordion-arrow {
+                display: none;
+            }
+            
+            .genre-title, .subgenre-name, h3 {
+                color: black !important;
+            }
+            
+            .genre-tagline, .genre-description p, .subgenre-description {
+                color: #444 !important;
+            }
+
+            .game-tag, .characteristic-tag {
+                border: 1px solid #666 !important;
+                background: #eee !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 ÁRVORE DE GÊNEROS</h1>
+            <p class="subtitle">Clique em cada gênero para expandir</p>
+        </header>
+
+        <div class="accordion-container">
+            <!-- AÇÃO -->
+            <div class="accordion-item acao">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="genre-icon">⚔️</div>
+                    <div class="genre-info">
+                        <div class="genre-title">AÇÃO</div>
+                        <div class="genre-tagline">Reflexo, habilidade e coordenação motora</div>
+                    </div>
+                    <div class="accordion-arrow">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="genre-description">
+                            <h3>📖 Características do Gênero</h3>
+                            <p>Jogos de ação testam os reflexos e a coordenação do jogador. O desafio está em reagir rapidamente, executar comandos com precisão e dominar o timing das ações. A habilidade do jogador é mais importante que planejamento ou estratégia.</p>
+                            <div class="characteristics">
+                                <span class="characteristic-tag">Reflexo rápido</span>
+                                <span class="characteristic-tag">Timing preciso</span>
+                                <span class="characteristic-tag">Coordenação motora</span>
+                                <span class="characteristic-tag">Desafio físico</span>
+                                <span class="characteristic-tag">Feedback imediato</span>
+                            </div>
+                        </div>
+                        
+                        <div class="subgenres-section">
+                            <h3>🎯 Subgêneros</h3>
+                            <div class="subgenres-grid">
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Plataforma</div>
+                                    <div class="subgenre-description">Pular entre plataformas, evitar obstáculos e alcançar o objetivo.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Super Mario Bros</span>
+                                        <span class="game-tag">Celeste</span>
+                                        <span class="game-tag">Sonic</span>
+                                        <span class="game-tag">Donkey Kong Country</span>
+                                        <span class="game-tag">Rayman</span>
+                                        <span class="game-tag">Super Meat Boy</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Luta</div>
+                                    <div class="subgenre-description">Combate 1v1 ou em grupo com combos, bloqueios e ataques especiais.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Street Fighter</span>
+                                        <span class="game-tag">Mortal Kombat</span>
+                                        <span class="game-tag">Tekken</span>
+                                        <span class="game-tag">Super Smash Bros</span>
+                                        <span class="game-tag">Guilty Gear</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Tiro (Shooter)</div>
+                                    <div class="subgenre-description">Mirar e atirar em inimigos, seja em primeira ou terceira pessoa.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Doom</span>
+                                        <span class="game-tag">Call of Duty</span>
+                                        <span class="game-tag">Counter-Strike</span>
+                                        <span class="game-tag">Halo</span>
+                                        <span class="game-tag">Overwatch</span>
+                                        <span class="game-tag">Valorant</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Beat 'em up</div>
+                                    <div class="subgenre-description">Lutar contra hordas de inimigos avançando por fases.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Streets of Rage</span>
+                                        <span class="game-tag">Final Fight</span>
+                                        <span class="game-tag">Castle Crashers</span>
+                                        <span class="game-tag">TMNT: Shredder's Revenge</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AVENTURA -->
+            <div class="accordion-item aventura">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="genre-icon">🗺️</div>
+                    <div class="genre-info">
+                        <div class="genre-title">AVENTURA</div>
+                        <div class="genre-tagline">Exploração, narrativa e descoberta</div>
+                    </div>
+                    <div class="accordion-arrow">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="genre-description">
+                            <h3>📖 Características do Gênero</h3>
+                            <p>Jogos de aventura focam em explorar mundos, descobrir segredos e acompanhar uma narrativa. O jogador é motivado pela curiosidade e pela progressão da história. Geralmente combinam puzzles, exploração e momentos de ação.</p>
+                            <div class="characteristics">
+                                <span class="characteristic-tag">Exploração</span>
+                                <span class="characteristic-tag">Narrativa forte</span>
+                                <span class="characteristic-tag">Puzzles ambientais</span>
+                                <span class="characteristic-tag">Progressão de história</span>
+                                <span class="characteristic-tag">Coleta de itens</span>
+                            </div>
+                        </div>
+                        
+                        <div class="subgenres-section">
+                            <h3>🎯 Subgêneros</h3>
+                            <div class="subgenres-grid">
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Ação-Aventura</div>
+                                    <div class="subgenre-description">Combina combate com exploração e puzzles em um mundo conectado.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">The Legend of Zelda</span>
+                                        <span class="game-tag">God of War</span>
+                                        <span class="game-tag">Tomb Raider</span>
+                                        <span class="game-tag">Uncharted</span>
+                                        <span class="game-tag">Horizon Zero Dawn</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Metroidvania</div>
+                                    <div class="subgenre-description">Mapa interconectado que se abre conforme ganha novas habilidades.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Hollow Knight</span>
+                                        <span class="game-tag">Metroid</span>
+                                        <span class="game-tag">Castlevania</span>
+                                        <span class="game-tag">Ori</span>
+                                        <span class="game-tag">Dead Cells</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Point & Click</div>
+                                    <div class="subgenre-description">Resolver puzzles clicando em objetos e combinando itens.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Monkey Island</span>
+                                        <span class="game-tag">Grim Fandango</span>
+                                        <span class="game-tag">Day of the Tentacle</span>
+                                        <span class="game-tag">Machinarium</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Visual Novel</div>
+                                    <div class="subgenre-description">História interativa com escolhas que afetam o enredo.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Ace Attorney</span>
+                                        <span class="game-tag">Danganronpa</span>
+                                        <span class="game-tag">Doki Doki Literature Club</span>
+                                        <span class="game-tag">Steins;Gate</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESTRATÉGIA -->
+            <div class="accordion-item estrategia">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="genre-icon">🧠</div>
+                    <div class="genre-info">
+                        <div class="genre-title">ESTRATÉGIA</div>
+                        <div class="genre-tagline">Planejamento, decisão e gestão de recursos</div>
+                    </div>
+                    <div class="accordion-arrow">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="genre-description">
+                            <h3>📖 Características do Gênero</h3>
+                            <p>Jogos de estratégia desafiam o jogador a pensar antes de agir. O foco está em planejar, gerenciar recursos, posicionar unidades e tomar decisões que afetam o longo prazo. A vitória vem da mente, não dos reflexos.</p>
+                            <div class="characteristics">
+                                <span class="characteristic-tag">Planejamento</span>
+                                <span class="characteristic-tag">Gestão de recursos</span>
+                                <span class="characteristic-tag">Tomada de decisão</span>
+                                <span class="characteristic-tag">Pensamento tático</span>
+                                <span class="characteristic-tag">Visão de longo prazo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="subgenres-section">
+                            <h3>🎯 Subgêneros</h3>
+                            <div class="subgenres-grid">
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Tempo Real (RTS)</div>
+                                    <div class="subgenre-description">Construir base, coletar recursos e comandar exércitos em tempo real.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">StarCraft</span>
+                                        <span class="game-tag">Age of Empires</span>
+                                        <span class="game-tag">WarCraft</span>
+                                        <span class="game-tag">Command & Conquer</span>
+                                        <span class="game-tag">Age of Mythology</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Por Turnos</div>
+                                    <div class="subgenre-description">Cada jogador age em seu turno, permitindo planejamento cuidadoso.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Civilization</span>
+                                        <span class="game-tag">XCOM</span>
+                                        <span class="game-tag">Fire Emblem</span>
+                                        <span class="game-tag">Into the Breach</span>
+                                        <span class="game-tag">Advance Wars</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Tower Defense</div>
+                                    <div class="subgenre-description">Posicionar torres para defender contra ondas de inimigos.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Plants vs Zombies</span>
+                                        <span class="game-tag">Bloons TD</span>
+                                        <span class="game-tag">Kingdom Rush</span>
+                                        <span class="game-tag">Defense Grid</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">4X</div>
+                                    <div class="subgenre-description">Explorar, Expandir, Explotar e Exterminar em escala global.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Civilization</span>
+                                        <span class="game-tag">Stellaris</span>
+                                        <span class="game-tag">Humankind</span>
+                                        <span class="game-tag">Endless Legend</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RPG -->
+            <div class="accordion-item rpg">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="genre-icon">⚗️</div>
+                    <div class="genre-info">
+                        <div class="genre-title">RPG</div>
+                        <div class="genre-tagline">Progressão, personalização e interpretação</div>
+                    </div>
+                    <div class="accordion-arrow">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="genre-description">
+                            <h3>📖 Características do Gênero</h3>
+                            <p>Role-Playing Games colocam o jogador no papel de um personagem que evolui ao longo do tempo. A progressão (níveis, equipamentos, habilidades) é central. Muitos RPGs também oferecem escolhas narrativas que moldam a história.</p>
+                            <div class="characteristics">
+                                <span class="characteristic-tag">Sistema de níveis</span>
+                                <span class="characteristic-tag">Personalização</span>
+                                <span class="characteristic-tag">Equipamentos/Loot</span>
+                                <span class="characteristic-tag">Árvore de habilidades</span>
+                                <span class="characteristic-tag">Narrativa ramificada</span>
+                            </div>
+                        </div>
+                        
+                        <div class="subgenres-section">
+                            <h3>🎯 Subgêneros</h3>
+                            <div class="subgenres-grid">
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">JRPG</div>
+                                    <div class="subgenre-description">RPGs japoneses com combate por turno, história linear e personagens carismáticos.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Final Fantasy</span>
+                                        <span class="game-tag">Chrono Trigger</span>
+                                        <span class="game-tag">Persona</span>
+                                        <span class="game-tag">Dragon Quest</span>
+                                        <span class="game-tag">Pokémon</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Action RPG</div>
+                                    <div class="subgenre-description">Combate em tempo real com sistemas de progressão profundos.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Dark Souls</span>
+                                        <span class="game-tag">Elden Ring</span>
+                                        <span class="game-tag">Diablo</span>
+                                        <span class="game-tag">Monster Hunter</span>
+                                        <span class="game-tag">The Witcher</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">MMORPG</div>
+                                    <div class="subgenre-description">RPG online massivo com milhares de jogadores simultâneos.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">World of Warcraft</span>
+                                        <span class="game-tag">Final Fantasy XIV</span>
+                                        <span class="game-tag">Guild Wars 2</span>
+                                        <span class="game-tag">RuneScape</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Roguelike / Roguelite</div>
+                                    <div class="subgenre-description">Morte permanente, níveis gerados aleatoriamente e alta rejogabilidade.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Hades</span>
+                                        <span class="game-tag">Dead Cells</span>
+                                        <span class="game-tag">Spelunky</span>
+                                        <span class="game-tag">The Binding of Isaac</span>
+                                        <span class="game-tag">Slay the Spire</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULAÇÃO -->
+            <div class="accordion-item simulacao">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="genre-icon">🏗️</div>
+                    <div class="genre-info">
+                        <div class="genre-title">SIMULAÇÃO</div>
+                        <div class="genre-tagline">Replicar sistemas e experiências do mundo real</div>
+                    </div>
+                    <div class="accordion-arrow">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="genre-description">
+                            <h3>📖 Características do Gênero</h3>
+                            <p>Jogos de simulação recriam atividades ou sistemas do mundo real. Podem simular dirigir veículos, administrar cidades, viver uma vida virtual ou gerenciar um negócio. O prazer vem de experimentar algo realista de forma segura.</p>
+                            <div class="characteristics">
+                                <span class="characteristic-tag">Realismo</span>
+                                <span class="characteristic-tag">Sistemas complexos</span>
+                                <span class="characteristic-tag">Gestão</span>
+                                <span class="characteristic-tag">Sandbox</span>
+                                <span class="characteristic-tag">Sem "game over" tradicional</span>
+                            </div>
+                        </div>
+                        
+                        <div class="subgenres-section">
+                            <h3>🎯 Subgêneros</h3>
+                            <div class="subgenres-grid">
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Simulação de Vida</div>
+                                    <div class="subgenre-description">Viver uma vida virtual, cuidar de personagens ou comunidades.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">The Sims</span>
+                                        <span class="game-tag">Animal Crossing</span>
+                                        <span class="game-tag">Stardew Valley</span>
+                                        <span class="game-tag">Tomodachi Life</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Construção / Gestão</div>
+                                    <div class="subgenre-description">Construir e administrar cidades, parques, hospitais, etc.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">SimCity</span>
+                                        <span class="game-tag">Cities: Skylines</span>
+                                        <span class="game-tag">RollerCoaster Tycoon</span>
+                                        <span class="game-tag">Planet Zoo</span>
+                                        <span class="game-tag">Two Point Hospital</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Veículos</div>
+                                    <div class="subgenre-description">Pilotar aviões, dirigir caminhões ou operar máquinas com realismo.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Microsoft Flight Simulator</span>
+                                        <span class="game-tag">Euro Truck Simulator</span>
+                                        <span class="game-tag">Farming Simulator</span>
+                                        <span class="game-tag">Gran Turismo</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Esportes</div>
+                                    <div class="subgenre-description">Simular esportes reais com times, ligas e temporadas.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">FIFA / EA FC</span>
+                                        <span class="game-tag">NBA 2K</span>
+                                        <span class="game-tag">F1</span>
+                                        <span class="game-tag">Football Manager</span>
+                                        <span class="game-tag">MLB The Show</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PUZZLE -->
+            <div class="accordion-item puzzle">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="genre-icon">🧩</div>
+                    <div class="genre-info">
+                        <div class="genre-title">PUZZLE</div>
+                        <div class="genre-tagline">Resolver problemas e desafios lógicos</div>
+                    </div>
+                    <div class="accordion-arrow">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="genre-description">
+                            <h3>📖 Características do Gênero</h3>
+                            <p>Jogos de puzzle desafiam a mente do jogador com problemas que exigem lógica, reconhecimento de padrões ou pensamento criativo. O prazer vem do momento "eureka" quando a solução é descoberta.</p>
+                            <div class="characteristics">
+                                <span class="characteristic-tag">Lógica</span>
+                                <span class="characteristic-tag">Reconhecimento de padrões</span>
+                                <span class="characteristic-tag">Solução única</span>
+                                <span class="characteristic-tag">Dificuldade progressiva</span>
+                                <span class="characteristic-tag">Momento "eureka"</span>
+                            </div>
+                        </div>
+                        
+                        <div class="subgenres-section">
+                            <h3>🎯 Subgêneros</h3>
+                            <div class="subgenres-grid">
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Lógica / Física</div>
+                                    <div class="subgenre-description">Resolver puzzles usando regras lógicas ou física do jogo.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Portal</span>
+                                        <span class="game-tag">Baba Is You</span>
+                                        <span class="game-tag">The Witness</span>
+                                        <span class="game-tag">The Talos Principle</span>
+                                        <span class="game-tag">Antichamber</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Match / Combinar</div>
+                                    <div class="subgenre-description">Combinar peças iguais para eliminar ou pontuar.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Tetris</span>
+                                        <span class="game-tag">Candy Crush</span>
+                                        <span class="game-tag">Puyo Puyo</span>
+                                        <span class="game-tag">Bejeweled</span>
+                                        <span class="game-tag">Dr. Mario</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Escape / Mistério</div>
+                                    <div class="subgenre-description">Encontrar pistas e resolver enigmas para escapar ou desvendar mistérios.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">The Room</span>
+                                        <span class="game-tag">Return of the Obra Dinn</span>
+                                        <span class="game-tag">Escape Simulator</span>
+                                        <span class="game-tag">Her Story</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OUTROS -->
+            <div class="accordion-item outros">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="genre-icon">✨</div>
+                    <div class="genre-info">
+                        <div class="genre-title">OUTROS GÊNEROS</div>
+                        <div class="genre-tagline">Gêneros híbridos, únicos e difíceis de classificar</div>
+                    </div>
+                    <div class="accordion-arrow">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="genre-description">
+                            <h3>📖 Sobre Esta Categoria</h3>
+                            <p>Alguns gêneros não se encaixam perfeitamente nas categorias tradicionais, seja por serem muito novos, muito específicos ou por misturarem elementos de vários gêneros de forma única. Estes são alguns dos mais relevantes.</p>
+                            <div class="characteristics">
+                                <span class="characteristic-tag">Inovação</span>
+                                <span class="characteristic-tag">Hibridismo</span>
+                                <span class="characteristic-tag">Experiências únicas</span>
+                                <span class="characteristic-tag">Difícil classificação</span>
+                            </div>
+                        </div>
+                        
+                        <div class="subgenres-section">
+                            <h3>🎯 Subgêneros</h3>
+                            <div class="subgenres-grid">
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Ritmo / Musical</div>
+                                    <div class="subgenre-description">Pressionar botões no tempo da música.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Guitar Hero</span>
+                                        <span class="game-tag">Beat Saber</span>
+                                        <span class="game-tag">Rhythm Heaven</span>
+                                        <span class="game-tag">Dance Dance Revolution</span>
+                                        <span class="game-tag">Crypt of the NecroDancer</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Sandbox</div>
+                                    <div class="subgenre-description">Mundo aberto para criar, construir e explorar livremente.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Minecraft</span>
+                                        <span class="game-tag">Terraria</span>
+                                        <span class="game-tag">Garry's Mod</span>
+                                        <span class="game-tag">Roblox</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Battle Royale</div>
+                                    <div class="subgenre-description">Muitos jogadores, área que encolhe, último sobrevivente vence.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Fortnite</span>
+                                        <span class="game-tag">PUBG</span>
+                                        <span class="game-tag">Apex Legends</span>
+                                        <span class="game-tag">Fall Guys</span>
+                                    </div>
+                                </div>
+                                <div class="subgenre-card">
+                                    <div class="subgenre-name">Horror / Terror</div>
+                                    <div class="subgenre-description">Criar medo e tensão através de atmosfera, sustos e vulnerabilidade.</div>
+                                    <div class="games-list">
+                                        <span class="game-tag">Resident Evil</span>
+                                        <span class="game-tag">Silent Hill</span>
+                                        <span class="game-tag">Amnesia</span>
+                                        <span class="game-tag">Outlast</span>
+                                        <span class="game-tag">Phasmophobia</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p class="footer-text">📚 Classificação simplificada para fins didáticos. Muitos jogos combinam múltiplos gêneros.</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Fecha todos os outros
+            document.querySelectorAll('.accordion-item').forEach(i => {
+                i.classList.remove('active');
+            });
+            
+            // Abre este se não estava ativo
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+
+        // Abre o primeiro accordion por padrão
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.accordion-item').classList.add('active');
+        });
+    </script>
+</body>
+</html>
