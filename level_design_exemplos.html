@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level Design — Exemplos por Gênero</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0f0f13;
+    --surface: #17171d;
+    --surface2: #1e1e27;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --text: #e8e6f0;
+    --muted: #8884a0;
+    --accent: #7c6ff7;
+    --accent2: #4ecdc4;
+    --warn: #f6a623;
+    --danger: #e85d75;
+    --green: #5bcf8a;
+    --blue: #5ba3e8;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(124,111,247,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: 100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(78,205,196,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 600;
+    line-height: 1.15;
+    max-width: 700px;
+    margin-bottom: 16px;
+  }
+  header h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  header p {
+    color: var(--muted);
+    max-width: 560px;
+    font-size: 15px;
+  }
+  .header-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid;
+    letter-spacing: 1px;
+  }
+  .badge-purple { color: var(--accent); border-color: rgba(124,111,247,0.35); background: rgba(124,111,247,0.08); }
+  .badge-teal   { color: var(--accent2); border-color: rgba(78,205,196,0.35); background: rgba(78,205,196,0.08); }
+  .badge-green  { color: var(--green); border-color: rgba(91,207,138,0.35); background: rgba(91,207,138,0.08); }
+  .badge-yellow { color: var(--warn); border-color: rgba(246,166,35,0.35); background: rgba(246,166,35,0.08); }
+  .badge-red    { color: var(--danger); border-color: rgba(232,93,117,0.35); background: rgba(232,93,117,0.08); }
+  .badge-blue   { color: var(--blue); border-color: rgba(91,163,232,0.35); background: rgba(91,163,232,0.08); }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,15,19,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 14px 18px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 48px 40px; max-width: 1100px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-number {
+    font-family: var(--mono);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.4;
+    line-height: 1;
+    min-width: 60px;
+  }
+  .section-meta h2 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .section-meta p {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 600px;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #ccc;
+    margin-top: 24px;
+    line-height: 1.7;
+  }
+  .callout strong { color: var(--text); }
+  .callout.green { border-left-color: var(--green); }
+  .callout.teal  { border-left-color: var(--accent2); }
+  .callout.warn  { border-left-color: var(--warn); }
+  .callout.red   { border-left-color: var(--danger); }
+
+  /* ── TAB SYSTEM (within section) ── */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .tab-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 7px 14px;
+    border: 1px solid var(--border2);
+    border-radius: 5px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .tab-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+  .tab-btn.active { background: var(--surface2); color: var(--accent); border-color: rgba(124,111,247,0.5); }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── SVG containers ── */
+  .svg-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px;
+    overflow: hidden;
+  }
+  .svg-wrap svg { width: 100%; height: auto; display: block; }
+
+  /* ── TABLE ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .compare-table th {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border2);
+    color: var(--muted);
+  }
+  .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .c-purple { color: var(--accent); }
+  .c-red    { color: var(--danger); }
+  .c-teal   { color: var(--accent2); }
+  .c-yellow { color: var(--warn); }
+  .c-green  { color: var(--green); }
+  .c-blue   { color: var(--blue); }
+
+  /* ── KEY INSIGHT ── */
+  .insight {
+    background: linear-gradient(135deg, rgba(124,111,247,0.12), rgba(78,205,196,0.08));
+    border: 1px solid rgba(124,111,247,0.3);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 28px 0;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .insight-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 60px;
+    padding: 32px 40px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* responsive */
+  @media (max-width: 640px) {
+    header, .section { padding-left: 20px; padding-right: 20px; }
+    nav { padding: 0 20px; }
+    .section-header { flex-direction: column; gap: 12px; }
+    .section-number { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">Game Design — Ensino Médio Técnico</div>
+  <h1>Level Design<br><em>Exemplos por Gênero</em></h1>
+  <p>Uma coleção de análises visuais de level design para uso em aula, cobrindo plataformers, puzzles, metroidvanias, shooters e jogos mobile.</p>
+  <div class="header-badges">
+    <span class="badge badge-purple">Plataformer</span>
+    <span class="badge badge-teal">Puzzle</span>
+    <span class="badge badge-green">Metroidvania</span>
+    <span class="badge badge-yellow">Shooter</span>
+    <span class="badge badge-red">Mobile</span>
+    <span class="badge badge-blue">Curva de Tensão</span>
+  </div>
+</header>
+
+<nav id="main-nav">
+  <button class="nav-btn active" onclick="showSection('s1',this)">01 — Mario 1-1</button>
+  <button class="nav-btn" onclick="showSection('s2',this)">02 — Celeste</button>
+  <button class="nav-btn" onclick="showSection('s3',this)">03 — Sonic</button>
+  <button class="nav-btn" onclick="showSection('s4',this)">04 — DKC</button>
+  <button class="nav-btn" onclick="showSection('s5',this)">05 — Portal 2</button>
+  <button class="nav-btn" onclick="showSection('s6',this)">06 — Hollow Knight</button>
+  <button class="nav-btn" onclick="showSection('s7',this)">07 — de_dust2</button>
+  <button class="nav-btn" onclick="showSection('s8',this)">08 — Mobile</button>
+  <button class="nav-btn" onclick="showSection('s9',this)">09 — Curvas</button>
+  <button class="nav-btn" onclick="showSection('s10',this)">10 — Comparativo</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 1: MARIO -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section active" id="s1">
+  <div class="section-header">
+    <div class="section-number">01</div>
+    <div class="section-meta">
+      <h2>Super Mario Bros — Level 1-1</h2>
+      <p>Plataformer 2D · Nintendo, 1985 · O exemplo mais estudado de level design da história</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-purple">Plataformer</span>
+        <span class="badge badge-green">Tutorial implícito</span>
+        <span class="badge badge-teal">Progressão linear</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 430" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="28" text-anchor="middle">Super Mario Bros — Level 1-1 · Divisão em regiões (chunks)</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="46" text-anchor="middle">Cada região introduz exatamente um novo desafio</text>
+      <!-- Ground -->
+      <rect x="30" y="310" width="620" height="18" rx="3" fill="rgba(91,207,138,0.2)" stroke="rgba(91,207,138,0.4)" stroke-width="0.5"/>
+      <!-- CHUNK A -->
+      <rect x="30" y="80" width="110" height="248" rx="6" fill="rgba(91,163,232,0.08)" stroke="rgba(91,163,232,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="85" y="100" text-anchor="middle" font-weight="700">A — Tutorial</text>
+      <rect x="48" y="272" width="18" height="18" rx="3" fill="#e85d75"/><text font-family="DM Sans,sans-serif" font-size="9" fill="#fff" x="57" y="285" text-anchor="middle">M</text>
+      <ellipse cx="115" cy="294" rx="8" ry="7" fill="rgba(246,166,35,0.6)"/>
+      <rect x="68" y="195" width="16" height="16" rx="2" fill="#f6a623"/><text font-family="DM Sans,sans-serif" font-size="9" fill="#000" x="76" y="207" text-anchor="middle">?</text>
+      <rect x="88" y="195" width="16" height="16" rx="2" fill="#f6a623"/><text font-family="DM Sans,sans-serif" font-size="9" fill="#000" x="96" y="207" text-anchor="middle">?</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="85" y="395" text-anchor="middle">●○○○○</text>
+      <!-- CHUNK B -->
+      <rect x="148" y="80" width="100" height="248" rx="6" fill="rgba(78,205,196,0.08)" stroke="rgba(78,205,196,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#4ecdc4" x="198" y="100" text-anchor="middle" font-weight="700">B — Pipes</text>
+      <rect x="162" y="252" width="20" height="46" rx="2" fill="rgba(91,207,138,0.5)"/><rect x="159" y="248" width="26" height="8" rx="2" fill="rgba(91,207,138,0.7)"/>
+      <rect x="212" y="238" width="20" height="60" rx="2" fill="rgba(91,207,138,0.5)"/><rect x="209" y="234" width="26" height="8" rx="2" fill="rgba(91,207,138,0.7)"/>
+      <rect x="175" y="205" width="16" height="16" rx="2" fill="#f6a623"/><text font-family="DM Sans,sans-serif" font-size="9" fill="#000" x="183" y="217" text-anchor="middle">?</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="198" y="395" text-anchor="middle">●●○○○</text>
+      <!-- CHUNK C -->
+      <rect x="256" y="80" width="110" height="248" rx="6" fill="rgba(246,166,35,0.08)" stroke="rgba(246,166,35,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#f6a623" x="311" y="100" text-anchor="middle" font-weight="700">C — Plataformas</text>
+      <rect x="268" y="185" width="50" height="10" rx="2" fill="rgba(246,166,35,0.4)"/>
+      <rect x="296" y="162" width="50" height="10" rx="2" fill="rgba(246,166,35,0.4)"/>
+      <ellipse cx="275" cy="294" rx="8" ry="7" fill="rgba(246,166,35,0.6)"/>
+      <ellipse cx="300" cy="294" rx="8" ry="7" fill="rgba(246,166,35,0.6)"/>
+      <rect x="288" y="210" width="16" height="16" rx="2" fill="#f6a623"/><text font-family="DM Sans,sans-serif" font-size="9" fill="#000" x="296" y="222" text-anchor="middle">?</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#f6a623" x="311" y="395" text-anchor="middle">●●●○○</text>
+      <!-- CHUNK D -->
+      <rect x="374" y="80" width="100" height="248" rx="6" fill="rgba(232,93,117,0.08)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="424" y="100" text-anchor="middle" font-weight="700">D — Pipes altos</text>
+      <rect x="396" y="220" width="22" height="78" rx="2" fill="rgba(91,207,138,0.5)"/><rect x="393" y="216" width="28" height="8" rx="2" fill="rgba(91,207,138,0.7)"/>
+      <ellipse cx="390" cy="294" rx="8" ry="7" fill="rgba(246,166,35,0.6)"/>
+      <ellipse cx="426" cy="294" rx="8" ry="7" fill="rgba(246,166,35,0.6)"/>
+      <ellipse cx="454" cy="294" rx="8" ry="7" fill="rgba(246,166,35,0.6)"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="424" y="395" text-anchor="middle">●●●●○</text>
+      <!-- CHUNK E -->
+      <rect x="482" y="80" width="168" height="248" rx="6" fill="rgba(124,111,247,0.1)" stroke="rgba(124,111,247,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#7c6ff7" x="566" y="100" text-anchor="middle" font-weight="700">E — Escada final</text>
+      <rect x="530" y="284" width="12" height="14" rx="1" fill="rgba(124,111,247,0.5)"/>
+      <rect x="518" y="274" width="24" height="24" rx="1" fill="rgba(124,111,247,0.45)"/>
+      <rect x="506" y="264" width="36" height="34" rx="1" fill="rgba(124,111,247,0.4)"/>
+      <rect x="494" y="254" width="48" height="44" rx="1" fill="rgba(124,111,247,0.35)"/>
+      <line x1="580" y1="120" x2="580" y2="306" stroke="#8884a0" stroke-width="2"/>
+      <polygon points="580,120 600,132 580,144" fill="#e85d75"/>
+      <rect x="588" y="258" width="60" height="52" rx="2" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#7c6ff7" x="566" y="395" text-anchor="middle">●●●●●</text>
+      <!-- Arrow + labels -->
+      <line x1="40" y1="350" x2="635" y2="350" marker-end="url(#a1)" stroke="#8884a0" stroke-width="1"/>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="370" text-anchor="middle">Progressão do jogador →</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="340" y="415" text-anchor="middle">Dificuldade por região</text>
+    </svg>
+  </div>
+
+  <div class="callout">
+    <strong>O que observar:</strong> Cada região (chunk) introduz <strong>exatamente um novo desafio</strong>. A região A ensina a pular. A B mostra canos. A C exige timing com múltiplos inimigos. A D eleva o perigo com canos mais altos. A E é pura recompensa. Não há região que "sobrecarregue" o jogador com dois elementos novos ao mesmo tempo.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 2: CELESTE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section" id="s2">
+  <div class="section-header">
+    <div class="section-number">02</div>
+    <div class="section-meta">
+      <h2>Celeste — Capítulo 1: Forsaken City</h2>
+      <p>Plataformer 2D · Extremely OK Games, 2018 · Estrutura de aprendizagem por "telas-problema"</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-purple">Plataformer</span>
+        <span class="badge badge-teal">Segurança decrescente</span>
+        <span class="badge badge-green">Narrativa via mecânica</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="28" text-anchor="middle">Celeste — Capítulo 1 · Progressão de aprendizagem</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="46" text-anchor="middle">A segurança diminui progressivamente — do seguro ao máximo risco</text>
+      <!-- Region 1 -->
+      <rect x="30" y="60" width="105" height="270" rx="8" fill="rgba(91,163,232,0.08)" stroke="rgba(91,163,232,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="82" y="82" text-anchor="middle" font-weight="700">Prólogo</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="82" y="96" text-anchor="middle">Andar + pular</text>
+      <rect x="65" y="230" width="14" height="20" rx="3" fill="#e85d75"/>
+      <circle cx="72" cy="224" r="7" fill="rgba(232,93,117,0.4)"/>
+      <rect x="46" y="252" width="70" height="8" rx="2" fill="rgba(91,163,232,0.3)"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="82" y="355" text-anchor="middle">muito seguro</text>
+      <!-- Region 2 -->
+      <rect x="143" y="60" width="105" height="270" rx="8" fill="rgba(78,205,196,0.08)" stroke="rgba(78,205,196,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#4ecdc4" x="195" y="82" text-anchor="middle" font-weight="700">Tela 2</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="195" y="96" text-anchor="middle">Escalar paredes</text>
+      <rect x="225" y="120" width="10" height="180" rx="2" fill="rgba(78,205,196,0.3)"/>
+      <rect x="218" y="190" width="12" height="18" rx="3" fill="#e85d75"/>
+      <line x1="195" y1="270" x2="195" y2="170" marker-end="url(#a2)" stroke="#4ecdc4" stroke-width="1.2"/>
+      <rect x="155" y="155" width="30" height="6" rx="3" fill="rgba(78,205,196,0.2)"/>
+      <rect x="155" y="155" width="18" height="6" rx="3" fill="#4ecdc4" opacity=".7"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#4ecdc4" x="172" y="148" text-anchor="middle">stamina</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="195" y="355" text-anchor="middle">seguro</text>
+      <!-- Region 3 -->
+      <rect x="256" y="60" width="105" height="270" rx="8" fill="rgba(246,166,35,0.08)" stroke="rgba(246,166,35,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#f6a623" x="308" y="82" text-anchor="middle" font-weight="700">Tela 4</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#f6a623" x="308" y="96" text-anchor="middle">Dash — aprenda</text>
+      <rect x="263" y="295" width="35" height="6" rx="2" fill="rgba(91,163,232,0.3)"/>
+      <rect x="318" y="295" width="35" height="6" rx="2" fill="rgba(91,163,232,0.3)"/>
+      <polygon points="298,295 302,278 306,295" fill="rgba(232,93,117,0.5)"/>
+      <polygon points="304,295 308,278 312,295" fill="rgba(232,93,117,0.5)"/>
+      <polygon points="308,210 318,224 308,238 298,224" fill="rgba(91,207,138,0.7)" stroke="rgba(91,207,138,0.9)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#5bcf8a" x="308" y="256" text-anchor="middle">cristal dash</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#f6a623" x="308" y="355" text-anchor="middle">moderado</text>
+      <!-- Region 4 -->
+      <rect x="369" y="60" width="105" height="270" rx="8" fill="rgba(232,93,117,0.08)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="421" y="82" text-anchor="middle" font-weight="700">Telas 5–8</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="421" y="96" text-anchor="middle">Combinar tudo</text>
+      <rect x="460" y="130" width="8" height="150" rx="2" fill="rgba(232,93,117,0.3)"/>
+      <rect x="380" y="280" width="35" height="6" rx="2" fill="rgba(91,163,232,0.3)"/>
+      <path d="M415 280 Q418 260 450 220 Q462 200 456 140" fill="none" stroke="#e85d75" stroke-width="1.5" stroke-dasharray="4 3" opacity=".7"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="421" y="310" text-anchor="middle">wall-jump + dash</text>
+      <polygon points="388,280 392,264 396,280" fill="rgba(232,93,117,0.4)"/>
+      <polygon points="398,280 402,264 406,280" fill="rgba(232,93,117,0.4)"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="421" y="355" text-anchor="middle">tenso</text>
+      <!-- Region 5: Climax -->
+      <rect x="482" y="60" width="168" height="270" rx="8" fill="rgba(124,111,247,0.1)" stroke="rgba(124,111,247,0.5)" stroke-width="1"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#7c6ff7" x="566" y="82" text-anchor="middle" font-weight="700">Clímax Cap.1</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#7c6ff7" x="566" y="96" text-anchor="middle">Tudo sob pressão</text>
+      <rect x="492" y="270" width="140" height="10" rx="3" fill="rgba(124,111,247,0.3)"/>
+      <rect x="492" y="270" width="50" height="10" rx="3" fill="rgba(124,111,247,0.15)" stroke-dasharray="3 2" stroke="#7c6ff7" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#7c6ff7" x="566" y="256" text-anchor="middle">ponte desmorona →</text>
+      <rect x="512" y="190" width="12" height="18" rx="3" fill="rgba(124,111,247,0.5)"/>
+      <circle cx="518" cy="184" r="7" fill="rgba(124,111,247,0.4)"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#7c6ff7" x="518" y="175" text-anchor="middle">Badeline</text>
+      <line x1="548" y1="197" x2="528" y2="197" marker-end="url(#a2)" stroke="#7c6ff7" stroke-width="1.2"/>
+      <rect x="544" y="230" width="12" height="18" rx="3" fill="#e85d75"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#7c6ff7" x="566" y="355" text-anchor="middle">máximo risco</text>
+      <!-- Arrow -->
+      <line x1="30" y1="360" x2="640" y2="360" marker-end="url(#a2)" stroke="#8884a0" stroke-width="1"/>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="378" text-anchor="middle">Progressão de aprendizagem →</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="340" y="415" text-anchor="middle">Segurança da tela</text>
+    </svg>
+  </div>
+
+  <div class="callout teal">
+    <strong>Princípio central de Celeste:</strong> cada "tela" é um problema isolado que ensina um único conceito. A segurança diminui progressivamente: no início o chão não cai; no clímax há ponte desmoronando + Badeline te perseguindo. O jogador nunca é punido com muita coisa nova de uma vez.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 3: SONIC -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section" id="s3">
+  <div class="section-header">
+    <div class="section-number">03</div>
+    <div class="section-meta">
+      <h2>Sonic — Green Hill Zone Act 1</h2>
+      <p>Plataformer 2D · Sega, 1991 · Design de múltiplas rotas: risco vs recompensa por caminho</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-purple">Plataformer</span>
+        <span class="badge badge-yellow">Multi-rotas</span>
+        <span class="badge badge-red">Risco vs recompensa</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 430" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="26" text-anchor="middle">Sonic — Green Hill Zone Act 1</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="44" text-anchor="middle">Três rotas simultâneas — cada uma com risco e recompensa diferentes</text>
+      <!-- Ground -->
+      <rect x="30" y="300" width="620" height="14" rx="3" fill="rgba(91,207,138,0.2)" stroke="rgba(91,207,138,0.3)" stroke-width="0.5"/>
+      <!-- High route platforms -->
+      <rect x="100" y="195" width="55" height="10" rx="3" fill="rgba(91,207,138,0.4)"/>
+      <rect x="200" y="175" width="55" height="10" rx="3" fill="rgba(91,207,138,0.4)"/>
+      <rect x="300" y="165" width="60" height="10" rx="3" fill="rgba(91,207,138,0.4)"/>
+      <rect x="410" y="155" width="55" height="10" rx="3" fill="rgba(91,207,138,0.4)"/>
+      <rect x="510" y="170" width="60" height="10" rx="3" fill="rgba(91,207,138,0.4)"/>
+      <!-- High route label -->
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5bcf8a" x="340" y="145" text-anchor="middle" font-weight="700">ROTA ALTA — difícil, mais recompensas</text>
+      <!-- High route path -->
+      <path d="M60 260 C 80 230, 90 200, 127 200 C 160 200, 175 180, 228 180 C 265 180, 280 170, 330 170 C 370 170, 390 160, 438 160 C 475 160, 490 175, 540 175 C 570 175, 590 200, 615 230" fill="none" stroke="#5bcf8a" stroke-width="2" stroke-dasharray="5 3"/>
+      <!-- Rings high -->
+      <circle cx="140" cy="182" r="5" fill="#f6a623" stroke="rgba(246,166,35,0.5)" stroke-width="0.5"/>
+      <circle cx="155" cy="182" r="5" fill="#f6a623" stroke="rgba(246,166,35,0.5)" stroke-width="0.5"/>
+      <circle cx="335" cy="150" r="5" fill="#f6a623"/><circle cx="350" cy="150" r="5" fill="#f6a623"/><circle cx="365" cy="150" r="5" fill="#f6a623"/>
+      <!-- 1UP -->
+      <rect x="450" y="136" width="22" height="18" rx="3" fill="rgba(78,205,196,0.7)"/>
+      <text font-family="Space Mono,monospace" font-size="9" fill="#fff" x="461" y="149" text-anchor="middle">1UP</text>
+      <!-- Central route -->
+      <path d="M60 280 C 120 275, 180 265, 240 270 L 330 270 C 380 270, 430 265, 480 270 L 590 270" fill="none" stroke="#5ba3e8" stroke-width="2.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="340" y="260" text-anchor="middle" font-weight="700">ROTA CENTRAL — caminho padrão</text>
+      <!-- Loop -->
+      <ellipse cx="310" cy="253" rx="22" ry="22" fill="none" stroke="#5ba3e8" stroke-width="1.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#5ba3e8" x="310" y="300" text-anchor="middle">loop</text>
+      <!-- Badniks -->
+      <ellipse cx="220" cy="284" rx="10" ry="8" fill="rgba(232,93,117,0.5)"/>
+      <text font-family="DM Sans,sans-serif" font-size="9" fill="#fff" x="220" y="288" text-anchor="middle">B</text>
+      <ellipse cx="420" cy="284" rx="10" ry="8" fill="rgba(232,93,117,0.5)"/>
+      <text font-family="DM Sans,sans-serif" font-size="9" fill="#fff" x="420" y="288" text-anchor="middle">B</text>
+      <!-- Rings central -->
+      <circle cx="175" cy="270" r="4" fill="#f6a623"/><circle cx="185" cy="270" r="4" fill="#f6a623"/>
+      <circle cx="375" cy="270" r="4" fill="#f6a623"/><circle cx="385" cy="270" r="4" fill="#f6a623"/>
+      <!-- Low route -->
+      <path d="M60 295 C 100 320, 150 335, 200 325 C 250 315, 290 330, 350 325 C 420 320, 460 340, 520 325 C 565 315, 590 300, 610 295" fill="none" stroke="#e85d75" stroke-width="2" stroke-dasharray="4 3"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="340" y="365" text-anchor="middle" font-weight="700">ROTA BAIXA — perigosa, rings escondidos</text>
+      <!-- Spikes -->
+      <polygon points="145,320 150,305 155,320" fill="rgba(232,93,117,0.6)"/>
+      <polygon points="158,320 163,305 168,320" fill="rgba(232,93,117,0.6)"/>
+      <polygon points="380,320 385,305 390,320" fill="rgba(232,93,117,0.6)"/>
+      <polygon points="393,320 398,305 403,320" fill="rgba(232,93,117,0.6)"/>
+      <!-- Hidden rings lower -->
+      <circle cx="260" cy="322" r="4" fill="#f6a623" opacity=".6"/>
+      <circle cx="272" cy="322" r="4" fill="#f6a623" opacity=".6"/>
+      <circle cx="284" cy="322" r="4" fill="#f6a623" opacity=".6"/>
+      <!-- Pit -->
+      <rect x="460" y="308" width="30" height="20" rx="2" fill="rgba(0,0,0,0.4)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="475" y="330" text-anchor="middle">poço</text>
+      <!-- Start/End -->
+      <rect x="30" y="255" width="30" height="30" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#e8e6f0" x="45" y="274" text-anchor="middle">▶</text>
+      <rect x="617" y="255" width="30" height="30" rx="4" fill="rgba(91,207,138,0.1)" stroke="rgba(91,207,138,0.4)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#5bcf8a" x="632" y="274" text-anchor="middle">■</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="45" y="308" text-anchor="middle">início</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5bcf8a" x="632" y="308" text-anchor="middle">fim</text>
+      <!-- Legend -->
+      <line x1="40" y1="398" x2="65" y2="398" stroke="#5bcf8a" stroke-width="2" stroke-dasharray="5 3"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="70" y="402">rota alta</text>
+      <line x1="180" y1="398" x2="205" y2="398" stroke="#5ba3e8" stroke-width="2.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="210" y="402">rota central</text>
+      <line x1="340" y1="398" x2="365" y2="398" stroke="#e85d75" stroke-width="2" stroke-dasharray="4 3"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="370" y="402">rota baixa</text>
+    </svg>
+  </div>
+
+  <div class="callout green">
+    <strong>O que Sonic faz de diferente:</strong> em vez de progressão linear, Green Hill Zone oferece múltiplos caminhos simultâneos. O design é construído sobre <strong>risco vs recompensa por escolha de rota</strong> — o caminho mais seguro (central) é linear; os caminhos alto e baixo são mais recompensadores, mas mais perigosos. O jogador define sua própria curva de tensão conforme escolhe a rota.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 4: DKC -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section" id="s4">
+  <div class="section-header">
+    <div class="section-number">04</div>
+    <div class="section-meta">
+      <h2>Donkey Kong Country</h2>
+      <p>Plataformer 2D · Rare, 1994 · Cada fase tem um único gimmick como protagonista</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-purple">Plataformer</span>
+        <span class="badge badge-yellow">Gimmick único por fase</span>
+        <span class="badge badge-teal">Variedade de mecânicas</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="26" text-anchor="middle">Donkey Kong Country — Estrutura por Worlds</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="44" text-anchor="middle">Cada fase: introduz gimmick → pratica → combina → boss testa</text>
+      <!-- World 1 -->
+      <rect x="30" y="70" width="118" height="200" rx="8" fill="rgba(91,207,138,0.08)" stroke="rgba(91,207,138,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5bcf8a" x="89" y="92" text-anchor="middle" font-weight="700">World 1</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5bcf8a" x="89" y="107" text-anchor="middle">Kongo Jungle</text>
+      <rect x="44" y="118" width="90" height="26" rx="4" fill="rgba(91,207,138,0.1)" stroke="rgba(91,207,138,0.3)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="89" y="128" text-anchor="middle">Jungle Hijinxs</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="89" y="141" text-anchor="middle">andar + rolar</text>
+      <rect x="44" y="150" width="90" height="26" rx="4" fill="rgba(91,207,138,0.1)" stroke="rgba(91,207,138,0.3)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="89" y="160" text-anchor="middle">Ropey Rampage</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="89" y="173" text-anchor="middle">cordas</text>
+      <rect x="44" y="182" width="90" height="26" rx="4" fill="rgba(91,207,138,0.2)" stroke="rgba(91,207,138,0.6)" stroke-width="0.8"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5bcf8a" x="89" y="192" text-anchor="middle" font-weight="600">Winky's Walkway</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#f6a623" x="89" y="205" text-anchor="middle">animal: Winky 🐔</text>
+      <rect x="44" y="218" width="90" height="22" rx="4" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="89" y="232" text-anchor="middle">boss</text>
+      <!-- World 2 -->
+      <rect x="158" y="70" width="118" height="200" rx="8" fill="rgba(136,132,160,0.08)" stroke="rgba(136,132,160,0.3)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#8884a0" x="217" y="92" text-anchor="middle" font-weight="700">World 2</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="217" y="107" text-anchor="middle">Monkey Mines</text>
+      <rect x="172" y="118" width="90" height="26" rx="4" fill="rgba(136,132,160,0.08)" stroke="rgba(136,132,160,0.2)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="217" y="128" text-anchor="middle">Winky's Walkway</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="217" y="141" text-anchor="middle">obscuridade</text>
+      <rect x="172" y="150" width="90" height="26" rx="4" fill="rgba(136,132,160,0.08)" stroke="rgba(136,132,160,0.2)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="217" y="160" text-anchor="middle">Manic Mincers</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="217" y="173" text-anchor="middle">timing em escuridão</text>
+      <rect x="172" y="182" width="90" height="26" rx="4" fill="rgba(136,132,160,0.18)" stroke="rgba(136,132,160,0.5)" stroke-width="0.8"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="217" y="192" text-anchor="middle" font-weight="600">Mine Cart Carnage</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#f6a623" x="217" y="205" text-anchor="middle">gimmick: mine cart 🚂</text>
+      <rect x="172" y="218" width="90" height="22" rx="4" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="217" y="232" text-anchor="middle">boss</text>
+      <!-- World 3 -->
+      <rect x="286" y="70" width="118" height="200" rx="8" fill="rgba(78,205,196,0.08)" stroke="rgba(78,205,196,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#4ecdc4" x="345" y="92" text-anchor="middle" font-weight="700">World 3</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="345" y="107" text-anchor="middle">Vine Valley</text>
+      <rect x="300" y="118" width="90" height="26" rx="4" fill="rgba(78,205,196,0.08)" stroke="rgba(78,205,196,0.25)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="345" y="128" text-anchor="middle">Vulture Culture</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="345" y="141" text-anchor="middle">vinhas</text>
+      <rect x="300" y="150" width="90" height="26" rx="4" fill="rgba(78,205,196,0.08)" stroke="rgba(78,205,196,0.25)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="345" y="160" text-anchor="middle">Snow Barrel Blast</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="345" y="173" text-anchor="middle">barris explosivos</text>
+      <rect x="300" y="182" width="90" height="26" rx="4" fill="rgba(78,205,196,0.2)" stroke="rgba(78,205,196,0.6)" stroke-width="0.8"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="345" y="192" text-anchor="middle" font-weight="600">Slipslide Ride</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#f6a623" x="345" y="205" text-anchor="middle">gimmick: cordas + água 💧</text>
+      <rect x="300" y="218" width="90" height="22" rx="4" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="345" y="232" text-anchor="middle">boss</text>
+      <!-- World 4 -->
+      <rect x="414" y="70" width="118" height="200" rx="8" fill="rgba(91,163,232,0.08)" stroke="rgba(91,163,232,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="473" y="92" text-anchor="middle" font-weight="700">World 4</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="473" y="107" text-anchor="middle">Gorilla Glacier</text>
+      <rect x="428" y="118" width="90" height="26" rx="4" fill="rgba(91,163,232,0.08)" stroke="rgba(91,163,232,0.25)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="473" y="128" text-anchor="middle">Snow Barrel Blast</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="473" y="141" text-anchor="middle">gelo + escorregamento</text>
+      <rect x="428" y="150" width="90" height="26" rx="4" fill="rgba(91,163,232,0.08)" stroke="rgba(91,163,232,0.25)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="473" y="160" text-anchor="middle">Slipslide Ride</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="473" y="173" text-anchor="middle">timing em gelo</text>
+      <rect x="428" y="182" width="90" height="26" rx="4" fill="rgba(91,163,232,0.2)" stroke="rgba(91,163,232,0.6)" stroke-width="0.8"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="473" y="192" text-anchor="middle" font-weight="600">Croctopus Chase</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#f6a623" x="473" y="205" text-anchor="middle">gimmick: perseguição 🐊</text>
+      <rect x="428" y="218" width="90" height="22" rx="4" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="473" y="232" text-anchor="middle">boss</text>
+      <!-- World 5 -->
+      <rect x="542" y="70" width="108" height="200" rx="8" fill="rgba(232,93,117,0.08)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="596" y="92" text-anchor="middle" font-weight="700">World 5</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="596" y="107" text-anchor="middle">Kremkroc</text>
+      <rect x="556" y="118" width="80" height="26" rx="4" fill="rgba(232,93,117,0.08)" stroke="rgba(232,93,117,0.25)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="596" y="128" text-anchor="middle">Factory fases</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="596" y="141" text-anchor="middle">mecânicas mistas</text>
+      <rect x="556" y="150" width="80" height="26" rx="4" fill="rgba(232,93,117,0.08)" stroke="rgba(232,93,117,0.25)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e8e6f0" x="596" y="160" text-anchor="middle">Elevator Antics</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="596" y="173" text-anchor="middle">elevadores móveis</text>
+      <rect x="556" y="182" width="80" height="26" rx="4" fill="rgba(232,93,117,0.22)" stroke="rgba(232,93,117,0.7)" stroke-width="0.8"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="596" y="192" text-anchor="middle" font-weight="600">Tanked Up</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#f6a623" x="596" y="205" text-anchor="middle">gimmick: tanque ⛽</text>
+      <rect x="556" y="218" width="80" height="22" rx="4" fill="rgba(232,93,117,0.2)" stroke="rgba(232,93,117,0.6)" stroke-width="0.8"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="596" y="232" text-anchor="middle" font-weight="600">BOSS FINAL</text>
+      <!-- Difficulty progression -->
+      <line x1="30" y1="380" x2="650" y2="380" marker-end="url(#a4)" stroke="#8884a0" stroke-width="1"/>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="396" text-anchor="middle">Dificuldade cresce por world →</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5bcf8a" x="89" y="415" text-anchor="middle">fácil</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="217" y="415" text-anchor="middle">médio</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="345" y="415" text-anchor="middle">médio-difícil</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="473" y="415" text-anchor="middle">difícil</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="596" y="415" text-anchor="middle">muito difícil</text>
+      <!-- Gimmick structure note -->
+      <rect x="30" y="295" width="620" height="60" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#e8e6f0" x="340" y="317" text-anchor="middle">Estrutura de gimmick único por fase</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="336" text-anchor="middle">Introduz → Pratica em ambiente seguro → Combina com elementos anteriores → Testa no boss</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#7c6ff7" x="340" y="350" text-anchor="middle">Cada fase assinada por um gimmick específico — mine cart, barris, perseguição, tanque…</text>
+    </svg>
+  </div>
+
+  <div class="callout warn">
+    <strong>O modelo DKC de level design:</strong> diferente de Mario e Sonic, que tratam o level design como "ir do ponto A ao B", DKC faz cada fase parecer um <strong>lugar com personalidade própria</strong>. A variedade por fase — um gimmick completamente novo a cada nível — é uma das maiores contribuições do DKC ao gênero de plataforma.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 5: PORTAL 2 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section" id="s5">
+  <div class="section-header">
+    <div class="section-number">05</div>
+    <div class="section-meta">
+      <h2>Portal 2</h2>
+      <p>Puzzle · Valve, 2011 · Câmaras de puzzle intercaladas com set pieces narrativos</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-teal">Puzzle</span>
+        <span class="badge badge-purple">Set pieces narrativos</span>
+        <span class="badge badge-blue">Ambientes variados</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="28" text-anchor="middle">Portal 2 — Ritmo em puzzle games</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="46" text-anchor="middle">Set pieces narrativos como "respiros cognitivos" entre grupos de câmaras</text>
+      <!-- Timeline base -->
+      <line x1="40" y1="200" x2="640" y2="200" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+      <!-- Cap 1-2 -->
+      <rect x="40" y="160" width="100" height="60" rx="6" fill="rgba(91,163,232,0.1)" stroke="rgba(91,163,232,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="90" y="183" text-anchor="middle" font-weight="700">Cap. 1–2</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="90" y="198" text-anchor="middle">Ruínas Aperture</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="90" y="211" text-anchor="middle">+ primeiros portais</text>
+      <path d="M40 310 C 70 305, 100 290, 140 285" fill="none" stroke="#5ba3e8" stroke-width="2"/>
+      <!-- SET PIECE 1 -->
+      <line x1="147" y1="245" x2="147" y2="175" stroke="#f6a623" stroke-width="1" stroke-dasharray="3 2"/>
+      <rect x="120" y="155" width="54" height="22" rx="4" fill="rgba(246,166,35,0.15)" stroke="rgba(246,166,35,0.5)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="10" fill="#f6a623" x="147" y="170" text-anchor="middle">set piece</text>
+      <!-- Cap 3-4 -->
+      <rect x="160" y="130" width="120" height="60" rx="6" fill="rgba(91,163,232,0.1)" stroke="rgba(91,163,232,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="220" y="152" text-anchor="middle" font-weight="700">Cap. 3–4</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="220" y="167" text-anchor="middle">Câmaras modernas</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="220" y="180" text-anchor="middle">luz + géis</text>
+      <path d="M140 285 C 160 260, 180 230, 210 220 C 230 215, 250 240, 280 235" fill="none" stroke="#5ba3e8" stroke-width="2"/>
+      <!-- SET PIECE 2 -->
+      <line x1="287" y1="245" x2="287" y2="155" stroke="#f6a623" stroke-width="1" stroke-dasharray="3 2"/>
+      <rect x="260" y="135" width="54" height="22" rx="4" fill="rgba(246,166,35,0.15)" stroke="rgba(246,166,35,0.5)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="10" fill="#f6a623" x="287" y="150" text-anchor="middle">set piece</text>
+      <!-- Cap 5-6 -->
+      <rect x="300" y="100" width="120" height="60" rx="6" fill="rgba(124,111,247,0.1)" stroke="rgba(124,111,247,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#7c6ff7" x="360" y="122" text-anchor="middle" font-weight="700">Cap. 5–6</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="360" y="137" text-anchor="middle">Aperture antiga</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="360" y="150" text-anchor="middle">labirinto escuro</text>
+      <path d="M280 235 C 300 215, 330 190, 370 185 C 395 183, 400 210, 420 205" fill="none" stroke="#7c6ff7" stroke-width="2"/>
+      <!-- SET PIECE 3 -->
+      <line x1="427" y1="245" x2="427" y2="130" stroke="#f6a623" stroke-width="1" stroke-dasharray="3 2"/>
+      <rect x="400" y="110" width="54" height="22" rx="4" fill="rgba(246,166,35,0.15)" stroke="rgba(246,166,35,0.5)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="10" fill="#f6a623" x="427" y="125" text-anchor="middle">set piece</text>
+      <!-- Cap 7-9 -->
+      <rect x="440" y="70" width="120" height="60" rx="6" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="500" y="92" text-anchor="middle" font-weight="700">Cap. 7–9</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="500" y="107" text-anchor="middle">Wheatley no controle</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="500" y="120" text-anchor="middle">clímax</text>
+      <path d="M420 205 C 440 185, 460 155, 500 130 C 530 115, 550 160, 580 150 C 605 145, 620 180, 640 200" fill="none" stroke="#e85d75" stroke-width="2"/>
+      <!-- Axes -->
+      <line x1="40" y1="380" x2="640" y2="380" marker-end="url(#a5)" stroke="#8884a0" stroke-width="1"/>
+      <line x1="40" y1="380" x2="40" y2="60" marker-end="url(#a5)" stroke="#8884a0" stroke-width="1"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="630" y="396" text-anchor="end">Progressão</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="28" y="90" text-anchor="middle">tensão</text>
+      <!-- Legend -->
+      <line x1="60" y1="420" x2="80" y2="420" stroke="#f6a623" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="86" y="424">set piece (respiro narrativo)</text>
+      <rect x="280" y="413" width="12" height="8" rx="2" fill="rgba(91,163,232,0.2)" stroke="rgba(91,163,232,0.4)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="298" y="420">câmaras de puzzle</text>
+      <rect x="440" y="413" width="12" height="8" rx="2" fill="rgba(246,166,35,0.15)" stroke="rgba(246,166,35,0.5)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="458" y="420">ambiente novo</text>
+    </svg>
+  </div>
+
+  <div class="callout teal">
+    <strong>O segredo do Portal 2 para pacing em puzzle games:</strong> o jogador pode travar 5 ou 20 minutos na mesma câmara, o que esgota. A Valve resolve intercalando set pieces narrativos que funcionam como "limpadores de palato". Além disso, o ambiente muda radicalmente a cada capítulo — ruínas, câmaras modernas, Aperture antiga, caos final — evitando saturação visual.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 6: HOLLOW KNIGHT -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section" id="s6">
+  <div class="section-header">
+    <div class="section-number">06</div>
+    <div class="section-meta">
+      <h2>Hollow Knight</h2>
+      <p>Metroidvania · Team Cherry, 2017 · Mundo interconectado com regiões de identidade própria</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-green">Metroidvania</span>
+        <span class="badge badge-purple">Bloqueios por habilidade</span>
+        <span class="badge badge-red">Tensão por atmosfera</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="28" text-anchor="middle">Hollow Knight — Mapa de Hallownest</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="46" text-anchor="middle">Cada região tem cor, inimigos, música e nível de tensão distintos</text>
+      <!-- Dirtmouth hub -->
+      <rect x="280" y="60" width="120" height="48" rx="8" fill="rgba(136,132,160,0.12)" stroke="rgba(136,132,160,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="12" fill="#8884a0" x="340" y="82" text-anchor="middle" font-weight="700">Dirtmouth</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="340" y="96" text-anchor="middle">hub — zona segura</text>
+      <!-- Forgotten Crossroads -->
+      <rect x="200" y="140" width="130" height="48" rx="8" fill="rgba(91,163,232,0.1)" stroke="rgba(91,163,232,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="265" y="160" text-anchor="middle" font-weight="700">Forgotten Crossroads</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="265" y="176" text-anchor="middle">área inicial ●○○○○</text>
+      <!-- Greenpath -->
+      <rect x="60" y="140" width="120" height="48" rx="8" fill="rgba(91,207,138,0.1)" stroke="rgba(91,207,138,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5bcf8a" x="120" y="160" text-anchor="middle" font-weight="700">Greenpath</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5bcf8a" x="120" y="176" text-anchor="middle">exploração ●●○○○</text>
+      <!-- Fungal Wastes -->
+      <rect x="80" y="224" width="130" height="48" rx="8" fill="rgba(124,111,247,0.1)" stroke="rgba(124,111,247,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#7c6ff7" x="145" y="244" text-anchor="middle" font-weight="700">Fungal Wastes</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#7c6ff7" x="145" y="260" text-anchor="middle">moderado ●●●○○</text>
+      <!-- City of Tears -->
+      <rect x="240" y="224" width="130" height="48" rx="8" fill="rgba(91,163,232,0.12)" stroke="rgba(91,163,232,0.5)" stroke-width="0.8"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="305" y="244" text-anchor="middle" font-weight="700">City of Tears</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="305" y="260" text-anchor="middle">tenso ●●●●○</text>
+      <!-- Crystal Peak -->
+      <rect x="390" y="140" width="120" height="48" rx="8" fill="rgba(246,166,35,0.1)" stroke="rgba(246,166,35,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#f6a623" x="450" y="160" text-anchor="middle" font-weight="700">Crystal Peak</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#f6a623" x="450" y="176" text-anchor="middle">difícil ●●●●○</text>
+      <!-- Deepnest HORROR -->
+      <rect x="80" y="308" width="130" height="48" rx="8" fill="rgba(20,20,25,0.8)" stroke="rgba(136,132,160,0.3)" stroke-width="0.8"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#d3d1c7" x="145" y="328" text-anchor="middle" font-weight="700">Deepnest</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="145" y="344" text-anchor="middle">horror / máximo ●●●●●</text>
+      <!-- Kingdom's Edge -->
+      <rect x="390" y="224" width="130" height="48" rx="8" fill="rgba(232,93,117,0.12)" stroke="rgba(232,93,117,0.5)" stroke-width="0.8"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="455" y="244" text-anchor="middle" font-weight="700">Kingdom's Edge</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="455" y="260" text-anchor="middle">clímax ●●●●●</text>
+      <!-- Connectors -->
+      <line x1="280" y1="108" x2="265" y2="140" marker-end="url(#a6)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+      <line x1="340" y1="108" x2="450" y2="140" marker-end="url(#a6)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+      <line x1="180" y1="164" x2="120" y2="164" marker-end="url(#a6)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+      <line x1="200" y1="188" x2="145" y2="224" marker-end="url(#a6)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+      <line x1="265" y1="188" x2="305" y2="224" marker-end="url(#a6)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+      <line x1="120" y1="272" x2="145" y2="308" marker-end="url(#a6)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+      <line x1="390" y1="188" x2="450" y2="224" marker-end="url(#a6)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+      <!-- Locks -->
+      <text font-family="DM Sans,sans-serif" font-size="14" fill="#f6a623" x="262" y="213">🔒</text>
+      <text font-family="DM Sans,sans-serif" font-size="14" fill="#f6a623" x="390" y="298">🔒</text>
+      <!-- Legend -->
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="40" y="400">Cor = temperatura emocional da região</text>
+      <rect x="40" y="412" width="12" height="8" rx="2" fill="rgba(136,132,160,0.3)"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="58" y="420">hub / seguro</text>
+      <rect x="140" y="412" width="12" height="8" rx="2" fill="rgba(91,207,138,0.3)"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="158" y="420">exploração</text>
+      <rect x="240" y="412" width="12" height="8" rx="2" fill="rgba(91,163,232,0.3)"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="258" y="420">tensão média</text>
+      <rect x="360" y="412" width="12" height="8" rx="2" fill="rgba(232,93,117,0.3)"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="378" y="420">tensão alta</text>
+      <rect x="460" y="412" width="12" height="8" rx="2" fill="rgba(20,20,25,0.8)" stroke="rgba(136,132,160,0.3)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="478" y="420">horror / máximo</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#f6a623" x="40" y="446">🔒 = bloqueio por habilidade não desbloqueada</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="40" y="462">Banco de descanso = checkpoint que zera a tensão do jogador</text>
+    </svg>
+  </div>
+
+  <div class="callout red">
+    <strong>Level design por regiões com identidade própria:</strong> cada região tem cor, inimigos, música e nível de tensão distintos. O Deepnest é escuro, claustrofóbico, sem mapa. Os bancos funcionam como "respiros obrigatórios". O design usa bloqueios por habilidade para garantir que o jogador encontre regiões na ordem de dificuldade adequada, mesmo num mundo aberto.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 7: DE_DUST2 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section" id="s7">
+  <div class="section-header">
+    <div class="section-number">07</div>
+    <div class="section-meta">
+      <h2>de_dust2 — Counter-Strike</h2>
+      <p>Shooter Competitivo · Valve · Equilíbrio, tempo de deslocamento e tensão emergente</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-red">Shooter Competitivo</span>
+        <span class="badge badge-yellow">Tensão emergente</span>
+        <span class="badge badge-blue">Travel time</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="26" text-anchor="middle">de_dust2 — Shooter Competitivo</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="44" text-anchor="middle">Level design multiplayer: equilíbrio, rotas e pontos de tensão emergente</text>
+      <!-- CT Spawn -->
+      <rect x="30" y="160" width="90" height="50" rx="6" fill="rgba(91,163,232,0.1)" stroke="rgba(91,163,232,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="75" y="181" text-anchor="middle" font-weight="700">CT Spawn</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="75" y="196" text-anchor="middle">base CT</text>
+      <!-- T Spawn -->
+      <rect x="560" y="160" width="90" height="50" rx="6" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="605" y="181" text-anchor="middle" font-weight="700">T Spawn</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="605" y="196" text-anchor="middle">base T</text>
+      <!-- Mid -->
+      <rect x="270" y="90" width="140" height="50" rx="6" fill="rgba(246,166,35,0.1)" stroke="rgba(246,166,35,0.5)" stroke-width="1"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#f6a623" x="340" y="111" text-anchor="middle" font-weight="700">Mid / Short</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#f6a623" x="340" y="127" text-anchor="middle">zona de maior conflito</text>
+      <!-- Long A -->
+      <rect x="110" y="60" width="130" height="50" rx="6" fill="rgba(124,111,247,0.1)" stroke="rgba(124,111,247,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#7c6ff7" x="175" y="81" text-anchor="middle" font-weight="700">Long A</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#7c6ff7" x="175" y="97" text-anchor="middle">rota longa — controle</text>
+      <!-- Site A -->
+      <rect x="100" y="210" width="130" height="60" rx="6" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.5)" stroke-width="1.5"/>
+      <text font-family="Space Mono,monospace" font-size="12" fill="#e85d75" x="165" y="232" text-anchor="middle" font-weight="700">Bomb Site A</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="165" y="248" text-anchor="middle">objetivo — alta tensão</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="165" y="262" text-anchor="middle">pico do round</text>
+      <!-- Site B -->
+      <rect x="450" y="210" width="130" height="60" rx="6" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.5)" stroke-width="1.5"/>
+      <text font-family="Space Mono,monospace" font-size="12" fill="#e85d75" x="515" y="232" text-anchor="middle" font-weight="700">Bomb Site B</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="515" y="248" text-anchor="middle">objetivo — alta tensão</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="515" y="262" text-anchor="middle">pico do round</text>
+      <!-- B Tunnels -->
+      <rect x="440" y="80" width="130" height="50" rx="6" fill="rgba(124,111,247,0.1)" stroke="rgba(124,111,247,0.4)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#7c6ff7" x="505" y="101" text-anchor="middle" font-weight="700">Upper Tunnels</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#7c6ff7" x="505" y="117" text-anchor="middle">rota B — flanqueio</text>
+      <!-- Connectors -->
+      <line x1="120" y1="160" x2="120" y2="110" marker-end="url(#a7)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="106" y="136" text-anchor="end">~10s</text>
+      <line x1="175" y1="110" x2="270" y2="115" marker-end="url(#a7)" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+      <line x1="120" y1="210" x2="165" y2="210" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+      <line x1="230" y1="240" x2="270" y2="135" marker-end="url(#a7)" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="244" y="196" text-anchor="middle">short</text>
+      <line x1="560" y1="185" x2="505" y2="130" marker-end="url(#a7)" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="542" y="152" text-anchor="end">~8s</text>
+      <line x1="560" y1="185" x2="515" y2="210" marker-end="url(#a7)" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="548" y="202" text-anchor="end">~12s</text>
+      <line x1="410" y1="115" x2="450" y2="115" marker-end="url(#a7)" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+      <line x1="120" y1="185" x2="100" y2="210" marker-end="url(#a7)" stroke="rgba(91,163,232,0.5)" stroke-width="1.2"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#5ba3e8" x="60" y="202" text-anchor="middle">CT→A ~5s</text>
+      <line x1="120" y1="185" x2="340" y2="185" marker-end="url(#a7)" stroke="rgba(91,163,232,0.4)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#5ba3e8" x="230" y="200" text-anchor="middle">CT→B tunnels: ~15s</text>
+      <!-- Timing box -->
+      <rect x="30" y="340" width="620" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#e8e6f0" x="340" y="362" text-anchor="middle">Princípio de travel time (tempo de deslocamento)</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="382" text-anchor="middle">CT → Site A: ~5s  |  T → Site A: ~15s  →  equilíbrio por "janela de setup"</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="400" text-anchor="middle">CT → Site B: ~15s  |  T → Site B: ~12s  →  equilíbrio por "vantagem mínima"</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#f6a623" x="340" y="418" text-anchor="middle">Mid = controlar o mid dá acesso a ambos os sites</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="340" y="433" text-anchor="middle">Pico de tensão: plant / defuse — os últimos 40 segundos de cada round</text>
+    </svg>
+  </div>
+
+  <div class="callout warn">
+    <strong>Level design multiplayer é sobre tempo, não narrativa:</strong> o designer controla rotas (quantas opções cada time tem), tempo (quanto leva para chegar a cada objetivo) e linhas de visão (onde o confronto inevitavelmente acontece). A tensão não é planejada — é emergente do confronto entre jogadores.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 8: MOBILE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section" id="s8">
+  <div class="section-header">
+    <div class="section-number">08</div>
+    <div class="section-meta">
+      <h2>Jogos Mobile — CoC &amp; Brawl Stars</h2>
+      <p>Mobile · Supercell · O conceito de "level design" se fragmenta em múltiplas camadas</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-red">Mobile</span>
+        <span class="badge badge-yellow">Progressão por sistemas</span>
+        <span class="badge badge-teal">Tensão emergente</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('coc','m8')">Clash of Clans</button>
+    <button class="tab-btn" onclick="switchTab('brawl','m8')">Brawl Stars</button>
+  </div>
+
+  <div id="m8-coc" class="tab-pane active">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 680 500" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+        <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="26" text-anchor="middle">Clash of Clans — Dois tipos de level design</text>
+        <!-- Left: Macro progression -->
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#e8e6f0" x="165" y="70" text-anchor="middle">1. Progressão macro</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="165" y="84" text-anchor="middle">jornada do jogador (meses)</text>
+        <rect x="100" y="100" width="130" height="34" rx="6" fill="rgba(91,207,138,0.1)" stroke="rgba(91,207,138,0.4)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#5bcf8a" x="165" y="117" text-anchor="middle" font-weight="700">TH 1–3 — Tutorial</text>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="165" y="129" text-anchor="middle">mecânicas básicas</text>
+        <line x1="165" y1="134" x2="165" y2="148" marker-end="url(#a8)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <rect x="100" y="148" width="130" height="34" rx="6" fill="rgba(91,163,232,0.1)" stroke="rgba(91,163,232,0.4)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="165" y="165" text-anchor="middle" font-weight="700">TH 4–6 — Expansão</text>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="165" y="177" text-anchor="middle">novos edifícios, guerra</text>
+        <line x1="165" y1="182" x2="165" y2="196" marker-end="url(#a8)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <rect x="100" y="196" width="130" height="34" rx="6" fill="rgba(246,166,35,0.1)" stroke="rgba(246,166,35,0.4)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#f6a623" x="165" y="213" text-anchor="middle" font-weight="700">TH 7–9 — Meio jogo</text>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="165" y="225" text-anchor="middle">heróis, estratégia</text>
+        <line x1="165" y1="230" x2="165" y2="244" marker-end="url(#a8)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <rect x="100" y="244" width="130" height="34" rx="6" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.4)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="165" y="261" text-anchor="middle" font-weight="700">TH 10–12 — Late</text>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="165" y="273" text-anchor="middle">meta competitivo</text>
+        <line x1="165" y1="278" x2="165" y2="292" marker-end="url(#a8)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <rect x="100" y="292" width="130" height="34" rx="6" fill="rgba(124,111,247,0.12)" stroke="rgba(124,111,247,0.5)" stroke-width="0.8"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#7c6ff7" x="165" y="309" text-anchor="middle" font-weight="700">TH 13–18 — Endgame</text>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="165" y="321" text-anchor="middle">Legend League</text>
+        <!-- Divider -->
+        <line x1="330" y1="90" x2="330" y2="490" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="5 4"/>
+        <!-- Right: Base design -->
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#e8e6f0" x="490" y="70" text-anchor="middle">2. Design da base</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="84" text-anchor="middle">espaço de batalha (feito pelo jogador!)</text>
+        <rect x="370" y="100" width="240" height="240" rx="4" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" stroke-dasharray="6 3"/>
+        <rect x="395" y="125" width="85" height="85" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <rect x="490" y="125" width="100" height="85" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <rect x="395" y="220" width="85" height="100" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <rect x="490" y="220" width="100" height="100" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <rect x="428" y="148" width="44" height="44" rx="4" fill="rgba(124,111,247,0.12)" stroke="rgba(124,111,247,0.5)" stroke-width="1.5"/>
+        <text font-family="Space Mono,monospace" font-size="12" fill="#7c6ff7" x="450" y="168" text-anchor="middle" font-weight="700">TH</text>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#7c6ff7" x="450" y="180" text-anchor="middle">núcleo</text>
+        <rect x="400" y="130" width="16" height="16" rx="2" fill="rgba(232,93,117,0.5)"/>
+        <text font-family="DM Sans,sans-serif" font-size="8" fill="#fff" x="408" y="141" text-anchor="middle">M</text>
+        <rect x="560" y="130" width="16" height="16" rx="2" fill="rgba(232,93,117,0.5)"/>
+        <text font-family="DM Sans,sans-serif" font-size="8" fill="#fff" x="568" y="141" text-anchor="middle">AD</text>
+        <rect x="400" y="290" width="16" height="16" rx="2" fill="rgba(232,93,117,0.5)"/>
+        <text font-family="DM Sans,sans-serif" font-size="8" fill="#fff" x="408" y="301" text-anchor="middle">AT</text>
+        <rect x="560" y="290" width="16" height="16" rx="2" fill="rgba(232,93,117,0.5)"/>
+        <text font-family="DM Sans,sans-serif" font-size="8" fill="#fff" x="568" y="301" text-anchor="middle">XB</text>
+        <rect x="500" y="135" width="16" height="16" rx="2" fill="rgba(246,166,35,0.5)"/>
+        <text font-family="DM Sans,sans-serif" font-size="8" fill="#000" x="508" y="146" text-anchor="middle">G</text>
+        <rect x="522" y="135" width="16" height="16" rx="2" fill="rgba(91,163,232,0.5)"/>
+        <text font-family="DM Sans,sans-serif" font-size="8" fill="#fff" x="530" y="146" text-anchor="middle">E</text>
+        <line x1="370" y1="200" x2="395" y2="200" marker-end="url(#a8)" stroke="#e85d75" stroke-width="1.2"/>
+        <line x1="490" y1="100" x2="490" y2="125" marker-end="url(#a8)" stroke="#e85d75" stroke-width="1.2"/>
+        <line x1="610" y1="250" x2="590" y2="250" marker-end="url(#a8)" stroke="#e85d75" stroke-width="1.2"/>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="354" y="204" text-anchor="end">ataque</text>
+        <!-- Principles box -->
+        <rect x="370" y="358" width="240" height="82" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <text font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#e8e6f0" x="490" y="378" text-anchor="middle">Princípios do design de base</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="396" text-anchor="middle">TH ao centro → forçar long pathing</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="412" text-anchor="middle">Compartimentos → sem acesso direto</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="428" text-anchor="middle">Defesas espalhadas → cobertura mútua</text>
+      </svg>
+    </div>
+    <div class="callout">
+      <strong>CoC tem dois "levels" diferentes:</strong> a progressão macro (TH1→18) funciona como curva de tensão de longa duração. Já o design da base é o que mais se aproxima de level design espacial — mas o jogador (!) cria o espaço, não o designer. O design da Supercell está nos sistemas.
+    </div>
+  </div>
+
+  <div id="m8-brawl" class="tab-pane">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg">
+        <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="26" text-anchor="middle">Brawl Stars — Design de mapas competitivos</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="44" text-anchor="middle">Simetria, controle de lanes e tensão emergente dos jogadores</text>
+        <!-- Map background -->
+        <rect x="30" y="60" width="300" height="380" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="12" fill="#e8e6f0" x="180" y="80" text-anchor="middle" font-weight="700">Mapa Gem Grab</text>
+        <!-- Lanes -->
+        <rect x="50" y="100" width="60" height="280" rx="4" fill="rgba(91,163,232,0.06)" stroke="rgba(91,163,232,0.25)" stroke-width="0.5" opacity=".7"/>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#5ba3e8" x="80" y="245" text-anchor="middle" transform="rotate(-90,80,245)">lane esquerda</text>
+        <rect x="120" y="100" width="120" height="280" rx="4" fill="rgba(246,166,35,0.06)" stroke="rgba(246,166,35,0.3)" stroke-width="0.8" opacity=".8"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#f6a623" x="180" y="240" text-anchor="middle" font-weight="700">centro</text>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#f6a623" x="180" y="254" text-anchor="middle">(mais disputado)</text>
+        <rect x="250" y="100" width="60" height="280" rx="4" fill="rgba(91,163,232,0.06)" stroke="rgba(91,163,232,0.25)" stroke-width="0.5" opacity=".7"/>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#5ba3e8" x="280" y="245" text-anchor="middle" transform="rotate(90,280,245)">lane direita</text>
+        <!-- Gem mine -->
+        <circle cx="180" cy="240" r="18" fill="rgba(78,205,196,0.15)" stroke="rgba(78,205,196,0.6)" stroke-width="1.5"/>
+        <text font-family="DM Sans,sans-serif" font-size="14" fill="#4ecdc4" x="180" y="244" text-anchor="middle">💎</text>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#4ecdc4" x="180" y="272" text-anchor="middle">mina de gemas</text>
+        <!-- Bushes -->
+        <ellipse cx="70" cy="160" rx="18" ry="12" fill="rgba(91,207,138,0.25)" stroke="rgba(91,207,138,0.4)" stroke-width="0.5"/>
+        <ellipse cx="70" cy="320" rx="18" ry="12" fill="rgba(91,207,138,0.25)" stroke="rgba(91,207,138,0.4)" stroke-width="0.5"/>
+        <ellipse cx="290" cy="160" rx="18" ry="12" fill="rgba(91,207,138,0.25)" stroke="rgba(91,207,138,0.4)" stroke-width="0.5"/>
+        <ellipse cx="290" cy="320" rx="18" ry="12" fill="rgba(91,207,138,0.25)" stroke="rgba(91,207,138,0.4)" stroke-width="0.5"/>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#5bcf8a" x="70" y="280" text-anchor="middle">🌿</text>
+        <text font-family="DM Sans,sans-serif" font-size="10" fill="#5bcf8a" x="70" y="292" text-anchor="middle">bush</text>
+        <!-- Walls -->
+        <rect x="130" y="130" width="20" height="40" rx="2" fill="rgba(136,132,160,0.4)"/>
+        <rect x="210" y="130" width="20" height="40" rx="2" fill="rgba(136,132,160,0.4)"/>
+        <rect x="130" y="310" width="20" height="40" rx="2" fill="rgba(136,132,160,0.4)"/>
+        <rect x="210" y="310" width="20" height="40" rx="2" fill="rgba(136,132,160,0.4)"/>
+        <!-- Spawns -->
+        <rect x="50" y="100" width="260" height="30" rx="4" fill="rgba(232,93,117,0.1)" stroke="rgba(232,93,117,0.3)" stroke-width="0.5"/>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="180" y="119" text-anchor="middle">Spawn Time A</text>
+        <rect x="50" y="350" width="260" height="30" rx="4" fill="rgba(91,163,232,0.1)" stroke="rgba(91,163,232,0.3)" stroke-width="0.5"/>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="180" y="369" text-anchor="middle">Spawn Time B</text>
+        <!-- Symmetry axis -->
+        <line x1="180" y1="100" x2="180" y2="380" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" stroke-dasharray="5 4"/>
+        <!-- Principles panel -->
+        <rect x="360" y="60" width="290" height="380" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="12" fill="#e8e6f0" x="505" y="82" text-anchor="middle" font-weight="700">Ferramentas do designer</text>
+        <rect x="375" y="95" width="260" height="56" rx="6" fill="rgba(91,163,232,0.06)" stroke="rgba(91,163,232,0.2)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="390" y="113">Simetria</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="128">Ambas as equipes têm rotas</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="142">e distâncias iguais.</text>
+        <rect x="375" y="160" width="260" height="56" rx="6" fill="rgba(246,166,35,0.06)" stroke="rgba(246,166,35,0.2)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#f6a623" x="390" y="178">Chokepoints</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="193">Passagens estreitas criam</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="207">conflitos previsíveis.</text>
+        <rect x="375" y="225" width="260" height="56" rx="6" fill="rgba(91,207,138,0.06)" stroke="rgba(91,207,138,0.2)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#5bcf8a" x="390" y="243">Bushes</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="258">Ocultam jogadores. Forçam</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="272">cautela e leitura de mapa.</text>
+        <rect x="375" y="290" width="260" height="56" rx="6" fill="rgba(78,205,196,0.06)" stroke="rgba(78,205,196,0.2)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#4ecdc4" x="390" y="308">Objetivo central</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="323">A mina de gemas atrai os dois</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="337">times. Cria o pico de tensão.</text>
+        <rect x="375" y="355" width="260" height="56" rx="6" fill="rgba(124,111,247,0.06)" stroke="rgba(124,111,247,0.2)" stroke-width="0.5"/>
+        <text font-family="Space Mono,monospace" font-size="11" fill="#7c6ff7" x="390" y="373">Brawler fit</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="388">Cada mapa favorece certos</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="390" y="402">brawlers. Design muda o meta.</text>
+      </svg>
+    </div>
+    <div class="callout teal">
+      <strong>Brawl Stars:</strong> o designer cria o espaço, mas a tensão emerge dos jogadores. O modo de jogo muda o que cada elemento significa — num Gem Grab o centro é crítico; num Showdown qualquer canto pode ser palco de conflito. Um mapa bem projetado funciona para múltiplos modos.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 9: CURVAS -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section" id="s9">
+  <div class="section-header">
+    <div class="section-number">09</div>
+    <div class="section-meta">
+      <h2>Curvas de Tensão</h2>
+      <p>Teoria · O padrão ideal e os quatro erros mais comuns em level design</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-blue">Teoria</span>
+        <span class="badge badge-purple">Pacing</span>
+        <span class="badge badge-red">Erros comuns</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <text font-family="DM Sans,sans-serif" font-size="15" font-weight="600" fill="#e8e6f0" x="340" y="26" text-anchor="middle">Curva de tensão — quatro padrões</text>
+      <!-- === CURVA IDEAL === -->
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5bcf8a" x="35" y="75" font-weight="700">1. Ideal — picos crescentes com respiros</text>
+      <line x1="35" y1="130" x2="330" y2="130" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <line x1="35" y1="80" x2="35" y2="135" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <path d="M35 125 C 60 120, 80 100, 100 95 C 115 90, 120 115, 140 112 C 160 109, 175 90, 200 82 C 215 75, 220 105, 245 102 C 265 99, 275 78, 305 68 C 315 65, 320 95, 330 92" fill="none" stroke="#5bcf8a" stroke-width="2"/>
+      <circle cx="100" cy="95" r="4" fill="#5bcf8a"/>
+      <circle cx="200" cy="82" r="4" fill="#5bcf8a"/>
+      <circle cx="305" cy="68" r="4" fill="#5bcf8a"/>
+      <circle cx="140" cy="112" r="3" fill="rgba(91,207,138,0.4)"/>
+      <circle cx="245" cy="102" r="3" fill="rgba(91,207,138,0.4)"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#5bcf8a" x="182" y="145" text-anchor="middle">▲ respiros intercalados, picos crescentes</text>
+      <!-- === CURVA PLANA === -->
+      <text font-family="Space Mono,monospace" font-size="11" fill="#8884a0" x="350" y="75" font-weight="700">2. Monótona — sem variação</text>
+      <line x1="350" y1="130" x2="645" y2="130" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <line x1="350" y1="80" x2="350" y2="135" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <path d="M350 105 C 380 103, 420 108, 460 104 C 490 101, 520 106, 560 103 C 590 101, 620 104, 645 103" fill="none" stroke="#8884a0" stroke-width="2" stroke-dasharray="5 3"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="497" y="145" text-anchor="middle">▲ sem contraste — jogador se dessensibiliza</text>
+      <!-- Divider -->
+      <line x1="35" y1="160" x2="645" y2="160" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="4 4"/>
+      <!-- === CURVA COM PICO CEDO === -->
+      <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="35" y="185" font-weight="700">3. Pico muito cedo — esgota</text>
+      <line x1="35" y1="240" x2="330" y2="240" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <line x1="35" y1="188" x2="35" y2="245" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <path d="M35 235 C 55 210, 70 190, 100 183 C 120 178, 125 235, 160 233 C 200 231, 240 229, 280 228 C 305 227, 320 228, 330 228" fill="none" stroke="#e85d75" stroke-width="2"/>
+      <circle cx="100" cy="183" r="4" fill="#e85d75"/>
+      <line x1="100" y1="178" x2="100" y2="168" marker-end="url(#a9)" stroke="#e85d75" stroke-width="1"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="120" y="170">pico cedo</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="250" y="220" text-anchor="middle">resto da fase parece</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="250" y="232" text-anchor="middle">fácil / irrelevante</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="182" y="255" text-anchor="middle">▲ jogador perde interesse no final</text>
+      <!-- === CURVA SEM RESPIRO === -->
+      <text font-family="Space Mono,monospace" font-size="11" fill="#f6a623" x="350" y="185" font-weight="700">4. Sem respiros — exaustivo</text>
+      <line x1="350" y1="240" x2="645" y2="240" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <line x1="350" y1="188" x2="350" y2="245" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <path d="M350 235 C 370 215, 390 195, 415 188 C 425 185, 430 215, 450 195 C 465 182, 470 212, 490 192 C 502 180, 507 210, 525 190 C 538 178, 542 208, 560 188 C 572 175, 578 205, 600 188 C 615 178, 628 202, 645 185" fill="none" stroke="#f6a623" stroke-width="2"/>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#f6a623" x="497" y="255" text-anchor="middle">▲ picos sem vale — jogador fica esgotado</text>
+      <!-- Summary table -->
+      <rect x="35" y="278" width="610" height="188" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#e8e6f0" x="340" y="300" text-anchor="middle">Como identificar em fases reais</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="100" y="322" text-anchor="middle">Padrão</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="290" y="322" text-anchor="middle">Sintoma</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="530" y="322" text-anchor="middle">Exemplo</text>
+      <line x1="45" y1="328" x2="635" y2="328" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5bcf8a" x="100" y="346" text-anchor="middle">Ideal</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="290" y="346" text-anchor="middle">Cada seção tem propósito claro</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="530" y="346" text-anchor="middle">Mario 1-1, Celeste Cap.1</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="100" y="370" text-anchor="middle">Monótona</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="290" y="370" text-anchor="middle">Fases parecem repetitivas</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="530" y="370" text-anchor="middle">Jogos sem planejamento</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="100" y="394" text-anchor="middle">Pico cedo</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="290" y="394" text-anchor="middle">A parte mais difícil veio cedo demais</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="530" y="394" text-anchor="middle">DKC Tropical Freeze</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#f6a623" x="100" y="418" text-anchor="middle">Sem respiro</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="290" y="418" text-anchor="middle">Jogador se sente esgotado</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="530" y="418" text-anchor="middle">Indie platf. sem planejamento</text>
+      <line x1="180" y1="310" x2="180" y2="450" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <line x1="390" y1="310" x2="390" y2="450" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+    </svg>
+  </div>
+
+  <div class="callout">
+    <strong>Pergunta para os alunos:</strong> ao analisar uma fase, identifique qual dos quatro padrões ela segue. O erro mais comum em jogos feitos por iniciantes é o padrão "sem respiro" — obstáculos um atrás do outro sem dar ao jogador uma pausa. Uma regra fundamental: os vales (momentos de calma) são tão importantes quanto os picos.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SECTION 10: COMPARATIVO -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="section" id="s10">
+  <div class="section-header">
+    <div class="section-number">10</div>
+    <div class="section-meta">
+      <h2>Comparativo por Gênero</h2>
+      <p>Como o gênero muda o que "level design" significa — e quem controla a tensão</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-purple">Síntese</span>
+        <span class="badge badge-blue">Todos os gêneros</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label">Questão central</div>
+    Em todo gênero existe curva de tensão — mas <strong>quem a cria é diferente</strong>. Em plataformas, o designer esculpe cada momento. Em puzzles, o jogador cria sua própria curva de frustração-eureka. Em Metroidvanias, a tensão vem da atmosfera e punição por morte. Em shooters competitivos e mobile, a tensão é emergente — o designer apenas cria o espaço onde ela vai acontecer.
+  </div>
+
+  <div class="svg-wrap" style="margin-top:24px;">
+    <svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg">
+      <text font-family="DM Sans,sans-serif" font-size="14" font-weight="600" fill="#e8e6f0" x="340" y="26" text-anchor="middle">Como o gênero muda o level design</text>
+      <!-- Headers -->
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="100" y="56" text-anchor="middle">Dimensão</text>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#5ba3e8" x="240" y="50" text-anchor="middle" font-weight="700">Plataformer</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#5ba3e8" x="240" y="64" text-anchor="middle">Mario, Sonic, DKC</text>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#4ecdc4" x="370" y="50" text-anchor="middle" font-weight="700">Puzzle</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#4ecdc4" x="370" y="64" text-anchor="middle">Portal 2</text>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#8884a0" x="490" y="50" text-anchor="middle" font-weight="700">Metroidvania</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#8884a0" x="490" y="64" text-anchor="middle">Hollow Knight</text>
+      <text font-family="Space Mono,monospace" font-size="11" fill="#e85d75" x="610" y="50" text-anchor="middle" font-weight="700">Mult/Mobile</text>
+      <text font-family="DM Sans,sans-serif" font-size="10" fill="#e85d75" x="610" y="64" text-anchor="middle">CS, Brawl Stars</text>
+      <line x1="30" y1="72" x2="650" y2="72" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+      <!-- Row 1 -->
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="100" y="96" text-anchor="middle" font-weight="500">Unidade</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="240" y="96" text-anchor="middle">chunk / região</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="96" text-anchor="middle">câmara-problema</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="96" text-anchor="middle">região temática</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="96" text-anchor="middle">rota + objetivo</text>
+      <line x1="30" y1="108" x2="650" y2="108" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <!-- Row 2 -->
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="100" y="136" text-anchor="middle" font-weight="500">Tensão vem de</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="240" y="130" text-anchor="middle">inimigos +</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="240" y="144" text-anchor="middle">plataformas</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="130" text-anchor="middle">complexidade</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="144" text-anchor="middle">cognitiva</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="130" text-anchor="middle">escuridão +</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="144" text-anchor="middle">punição por morte</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="130" text-anchor="middle">outros jogadores</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="144" text-anchor="middle">(imprevisível)</text>
+      <line x1="30" y1="156" x2="650" y2="156" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <!-- Row 3 -->
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="100" y="186" text-anchor="middle" font-weight="500">Respiro via</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="240" y="180" text-anchor="middle">zonas seguras</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="240" y="194" text-anchor="middle">+ recompensas</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="180" text-anchor="middle">set pieces</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="194" text-anchor="middle">narrativos</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="180" text-anchor="middle">bancos + hub</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="194" text-anchor="middle">Dirtmouth</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="180" text-anchor="middle">início do round</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="194" text-anchor="middle">pré-confronto</text>
+      <line x1="30" y1="206" x2="650" y2="206" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <!-- Row 4 -->
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="100" y="228" text-anchor="middle" font-weight="500">Designer controla</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="240" y="222" text-anchor="middle">ordem dos</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="240" y="236" text-anchor="middle">obstáculos</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="222" text-anchor="middle">mecânica ensinada</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="236" text-anchor="middle">em cada câmara</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="222" text-anchor="middle">acesso (locks)</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="236" text-anchor="middle">+ atmosfera</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="222" text-anchor="middle">geometria +</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="236" text-anchor="middle">tempo de rota</text>
+      <line x1="30" y1="248" x2="650" y2="248" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <!-- Row 5 -->
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="100" y="272" text-anchor="middle" font-weight="500">Tensão previsível?</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5bcf8a" x="240" y="272" text-anchor="middle">✓ sim (planejada)</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="272" text-anchor="middle">~ parcialmente</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="272" text-anchor="middle">~ parcialmente</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="272" text-anchor="middle">✗ emergente</text>
+      <line x1="30" y1="284" x2="650" y2="284" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <!-- Row 6 -->
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="100" y="308" text-anchor="middle" font-weight="500">Referências</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="240" y="302" text-anchor="middle">Mario, Celeste</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#5ba3e8" x="240" y="316" text-anchor="middle">Sonic, DKC</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="302" text-anchor="middle">Portal 2</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#4ecdc4" x="370" y="316" text-anchor="middle">The Witness</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="302" text-anchor="middle">Hollow Knight</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#8884a0" x="490" y="316" text-anchor="middle">Metroid Dread</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="302" text-anchor="middle">de_dust2, CoC</text>
+      <text font-family="DM Sans,sans-serif" font-size="11" fill="#e85d75" x="610" y="316" text-anchor="middle">Brawl Stars</text>
+      <!-- Grid lines vertical -->
+      <line x1="165" y1="36" x2="165" y2="330" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <line x1="310" y1="36" x2="310" y2="330" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <line x1="430" y1="36" x2="430" y2="330" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <line x1="550" y1="36" x2="550" y2="330" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <!-- Outer border -->
+      <rect x="30" y="36" width="620" height="296" rx="6" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <!-- Key question -->
+      <rect x="30" y="352" width="620" height="60" rx="8" fill="rgba(124,111,247,0.08)" stroke="rgba(124,111,247,0.3)" stroke-width="0.5"/>
+      <text font-family="Space Mono,monospace" font-size="12" fill="#7c6ff7" x="340" y="376" text-anchor="middle" font-weight="700">A pergunta central para qualquer gênero:</text>
+      <text font-family="DM Sans,sans-serif" font-size="12" fill="#8884a0" x="340" y="396" text-anchor="middle">"quem controla a tensão — o designer ou o jogador?" A resposta define tudo.</text>
+    </svg>
+  </div>
+</section>
+
+<footer>
+  Produzido para uso em aula · Ensino Médio Técnico em Desenvolvimento de Jogos · Todos os jogos citados são propriedade de seus respectivos desenvolvedores
+</footer>
+
+<script>
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function switchTab(id, prefix) {
+    const panes = document.querySelectorAll(`[id^="${prefix}-"]`);
+    panes.forEach(p => p.classList.remove('active'));
+    document.getElementById(`${prefix}-${id}`).classList.add('active');
+    const tabBtns = event.target.closest('.tabs').querySelectorAll('.tab-btn');
+    tabBtns.forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>

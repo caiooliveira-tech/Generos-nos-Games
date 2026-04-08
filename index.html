@@ -381,10 +381,48 @@
                 color: black !important;
             }
         }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: var(--bg-card);
+            transition: all 0.2s ease;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+            border-color: rgba(166, 108, 255, 0.6);
+            background: var(--bg-card-hover);
+            box-shadow: 0 0 12px rgba(166, 108, 255, 0.3);
+        }
+
+        nav a.active {
+            color: var(--text-primary);
+            border-color: rgba(166, 108, 255, 0.8);
+            box-shadow: 0 0 16px rgba(166, 108, 255, 0.4);
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="level_design_exemplos.html">Level Design Exemplos</a>
+        </nav>
         <header>
             <h1>🎮 ÁRVORE DE GÊNEROS</h1>
             <p class="subtitle">Clique em cada gênero para expandir</p>
